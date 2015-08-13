@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -58,6 +60,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     setContentView(R.layout.activity_login);
     //setupActionBar();
 
+    // don't auto-show keyboard
+    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     // Set up the login form.
     mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
     populateAutoComplete();
@@ -82,6 +87,18 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
       }
     });
 
+    Button verifyButton = (Button) findViewById(R.id.verify_sms_button);
+    verifyButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        // prevent back
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+        startActivity(intent);
+      }
+    });
+    
     mLoginFormView = findViewById(R.id.login_form);
     mProgressView = findViewById(R.id.login_progress);
   }

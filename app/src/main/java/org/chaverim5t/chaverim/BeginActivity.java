@@ -19,6 +19,12 @@ public class BeginActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+        // to prevent back (do we want to prevent it here?):
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+
         startActivity(intent);
       }
     });

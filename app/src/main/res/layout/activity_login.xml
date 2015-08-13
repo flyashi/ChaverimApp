@@ -58,7 +58,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/verify_button_text"
                     style="?android:textAppearanceSmall"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:id="@+id/verify_sms_button"/>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
