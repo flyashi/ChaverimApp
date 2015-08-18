@@ -8,4 +8,9 @@
     <style name="AppTheme_WithActionBar" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
     </style>
+    <style name="Divider">
+        <item name="android:background">@color/primary_dark_material_light</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
 </resources>

@@ -1,4 +1,4 @@
-package org.chaverim5t.chaverim;
+package org.chaverim5t.chaverim.ui;
 
 
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.chaverim5t.chaverim.R;
 
 
 /**

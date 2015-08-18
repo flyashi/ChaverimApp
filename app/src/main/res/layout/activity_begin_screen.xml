@@ -28,14 +28,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="@color/chaverim_background_dark_text_color"/>
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="0dp"
             android:text="BEGIN"
-            android:id="@+id/begin_button"/>
+            android:id="@+id/begin_button"
+            android:textColor="@color/chaverim_background_dark_text_color"/>
     </LinearLayout>
 
 </FrameLayout>

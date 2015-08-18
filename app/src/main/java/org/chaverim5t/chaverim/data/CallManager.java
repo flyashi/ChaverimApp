@@ -1,4 +1,4 @@
-package org.chaverim5t.chaverim;
+package org.chaverim5t.chaverim.data;
 
 /**
  * Created by yakov on 8/11/15.

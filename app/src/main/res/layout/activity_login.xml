@@ -6,7 +6,7 @@
              android:gravity="center_horizontal"
              android:orientation="vertical"
              android:theme="@style/AppTheme_WithActionBar"
-             tools:context="org.chaverim5t.chaverim.LoginActivity">
+             tools:context="org.chaverim5t.chaverim.ui.LoginActivity">
 
     <ImageView
         android:layout_width="fill_parent"
@@ -45,7 +45,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sms_login_description"
-                    style="?android:textAppearanceMedium"/>
+                    style="?android:textAppearanceMedium"
+                    android:textColor="@color/chaverim_background_dark_text_color"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -59,18 +60,20 @@
                     android:text="@string/verify_button_text"
                     style="?android:textAppearanceSmall"
                     android:textStyle="bold"
-                    android:id="@+id/verify_sms_button"/>
+                    android:id="@+id/verify_sms_button"
+                    android:textColor="@color/chaverim_background_dark_text_color"/>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
-                    android:background="@color/primary_dark_material_dark"
+                    android:background="@color/chaverim_background_dark_text_color"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"/>
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/password_login_description"
-                    style="?android:textAppearanceMedium"/>
+                    style="?android:textAppearanceMedium"
+                    android:textColor="@color/chaverim_background_dark_text_color"/>
                 <LinearLayout
                     android:id="@+id/email_login_form"
                     android:layout_width="match_parent"
@@ -105,7 +108,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/action_sign_in"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:textColor="@color/chaverim_background_dark_text_color"/>
 
                 </LinearLayout>
             </LinearLayout>

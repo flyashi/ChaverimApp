@@ -1,25 +1,19 @@
-package org.chaverim5t.chaverim;
-
-import java.util.Locale;
+package org.chaverim5t.chaverim.ui;
 
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+
+import org.chaverim5t.chaverim.data.CallManager;
+import org.chaverim5t.chaverim.R;
+import org.chaverim5t.chaverim.data.UserManager;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package org.chaverim5t.chaverim;
+package org.chaverim5t.chaverim.ui;
 
 
 import android.os.Bundle;
@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.chaverim5t.chaverim.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CallerIDFragment extends Fragment {
+public class NewCallFragment extends Fragment {
 
 
-  public CallerIDFragment() {
+  public NewCallFragment() {
     // Required empty public constructor
   }
 
@@ -23,7 +25,7 @@ public class CallerIDFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_caller_id, container, false);
+    return inflater.inflate(R.layout.fragment_new_call, container, false);
   }
 
 
