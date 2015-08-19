@@ -5,4 +5,10 @@ package org.chaverim5t.chaverim.data;
  */
 public class Call {
   public String title;
+
+  public Call() { }
+
+  public Call(String title) {
+    this.title = title;
+  }
 }

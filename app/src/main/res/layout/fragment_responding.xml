@@ -1,21 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="org.chaverim5t.chaverim.ui.RespondingFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/responding_swipe_refresh">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="You are not responding to any calls."
-        android:id="@+id/not_responding_text_view"/>
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="You are not responding to any calls."
+            android:id="@+id/not_responding_text_view"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:scrollbars="vertical"
-        android:id="@+id/responding_recycler_view"/>
-
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:scrollbars="vertical"
+            android:id="@+id/responding_recycler_view"/>
+    </LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
