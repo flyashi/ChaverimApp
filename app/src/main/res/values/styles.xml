@@ -13,4 +13,13 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
     </style>
+
+    <style name="newCallCallAreaTextStyle">
+        <item name="android:textSize">24dp</item>
+        <item name="android:layout_height">@dimen/new_call_call_area_label_height</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
 </resources>
