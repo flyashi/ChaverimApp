@@ -2,14 +2,17 @@ package org.chaverim5t.chaverim.ui;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.chaverim5t.chaverim.R;
@@ -22,6 +25,7 @@ import org.chaverim5t.chaverim.data.CallManager;
  */
 public class CallsFragment extends Fragment {
 
+  private static final String TAG = CallsFragment.class.getSimpleName();
   private RecyclerView recyclerView;
   private TextView noCallsTextView;
 
@@ -46,7 +50,27 @@ public class CallsFragment extends Fragment {
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
       public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            swipeRefreshLayout.setRefreshing(false);
+          }
+        }, 1000);
+      }
+    });
 
+    // To prevent the swipe to refresh from triggering while scrolling up, we enable it only when
+    // we're already scrolled all the way to the top.
+    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        if (newState == RecyclerView.SCROLL_STATE_IDLE
+            && recyclerView.computeVerticalScrollOffset() == 0) {
+          swipeRefreshLayout.setEnabled(true);
+        } else {
+          swipeRefreshLayout.setEnabled(false);
+        }
       }
     });
 
