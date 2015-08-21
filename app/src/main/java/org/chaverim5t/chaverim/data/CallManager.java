@@ -29,10 +29,18 @@ public class CallManager {
     callsList.add(new Call("Minyan needed in Mineola"));
     callsList.add(new Call("Ignition problem in Inwood"));
     callsList.add(new Call("Out of Gas in Oceanside"));
+
+    callerIDList = new ArrayList<>();
+    callerIDList.add(new CallerID("(718) 555-7212"));
+    callerIDList.add(new CallerID("(516) 555-1324"));
+    callerIDList.add(new CallerID("(917) 555-5309"));
+    callerIDList.add(new CallerID("(347) 555-8264"));
+
   }
 
   private ArrayList<Call> respondingCallsList;
   private ArrayList<Call> callsList;
+  private ArrayList<CallerID> callerIDList;
 
   public boolean isResponding() {
     return respondingCallsList.size() != 0;
@@ -44,5 +52,9 @@ public class CallManager {
 
   public List<Call> getAllCalls() {
     return callsList;
+  }
+
+  public List<CallerID> getCallerIDs() {
+    return callerIDList;
   }
 }

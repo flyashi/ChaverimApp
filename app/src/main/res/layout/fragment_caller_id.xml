@@ -1,13 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="org.chaverim5t.chaverim.ui.CallerIDFragment">
+             tools:context="org.chaverim5t.chaverim.ui.CallerIDFragment"
+    android:id="@+id/callerid_swipe_refresh">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="List of recent calls to the hotline"/>
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No recent Hotline calls."
+            android:id="@+id/no_recent_hotline_calls_text"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/callerid_recycler_view">
+        </android.support.v7.widget.RecyclerView>
+    </FrameLayout>
 
-</FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
