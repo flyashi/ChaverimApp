@@ -12,6 +12,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <!-- TODO(yakov): Change to .ui.BeginActivity when done testing! -->
         <activity
             android:name=".ui.BeginActivity"
             android:label="@string/app_name" >
@@ -30,9 +32,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.BeginActivity" />
         </activity>
+        <!-- -->
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main" >
+        </activity>
+
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

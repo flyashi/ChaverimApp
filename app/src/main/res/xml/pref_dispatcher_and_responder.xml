@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Notification Settings"
+        android:key="pref_key_storage_settings">
+        <CheckBoxPreference
+            android:key="receive_notifications"
+            android:title="Receive Notifications"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="receive_notification_new_call"
+            android:title="New Call"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="receive_notification_reopened_call"
+            android:title="Reopened Call"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="receive_notification_call_status_updated"
+            android:title="Call Status Updated"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="receive_notification_call_canceled"
+            android:title="Call Canceled"
+            android:summary="Receive notifications of call events which you may select below."
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="My Calls"
+        android:key="pref_key_storage_my_calls">
+        <CheckBoxPreference
+            android:key="persistent_notification"
+            android:title="Persistent Notification for My Calls"
+            android:summary="Show a persistent notification for calls you're responding to for fast access back to the app."
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="autoplay_voice_notes"
+            android:title="Autoplay voice notes"
+            android:summary="Automatically plays new voice notes, allowing voice chat-like usage."
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Location Settings"
+        android:key="pref_key_storage_location">
+        <CheckBoxPreference
+            android:key="use_location"
+            android:title="Use location"
+            android:summary="Use your location for various parts of the app, such as estimated drive time to a call"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="share_location"
+            android:title="Share location"
+            android:summary="Share your location with the server. This enables features such as &quot;You are the closest member.&quot;"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
