@@ -39,19 +39,5 @@ public class SettingsSubFragment extends PreferenceFragment {
       addPreferencesFromResource(R.xml.pref_responder);
     }
   }
-/*
-  @Override
-  public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = super.onCreateView(inflater, container, savedInstanceState);
-    //*
-    ListView lv = (ListView) view.findViewById(android.R.id.list);
-    lv.setOnTouchListener(new View.OnTouchListener() {
 
-      public boolean onTouch(View v, MotionEvent event) {
-        return (event.getAction() == MotionEvent.ACTION_MOVE);
-      }
-    });//
-    return view;
-  }
-*/
 }
