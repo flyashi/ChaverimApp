@@ -5,6 +5,8 @@
         />
     <org.chaverim5t.chaverim.ui.preferences.CallResponderHotlinePreference
         android:layout="@layout/preference_call" />
+    <org.chaverim5t.chaverim.ui.preferences.CallDispatchHotlinePreference
+        android:layout="@layout/preference_call" />
     <PreferenceCategory
         android:title="Notification Settings"
         android:key="pref_key_storage_settings">

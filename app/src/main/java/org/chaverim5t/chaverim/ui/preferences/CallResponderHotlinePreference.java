@@ -2,6 +2,7 @@ package org.chaverim5t.chaverim.ui.preferences;
 
 import android.content.Context;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +15,7 @@ public class CallResponderHotlinePreference extends Preference {
   }
 
   @Override
-  protected void onBindView(View view) {
+  protected void onBindView(@NonNull View view) {
     super.onBindView(view);
     View textAndImage = view.findViewById(R.id.text_and_image);
     TextView textView = (TextView) textAndImage.findViewById(R.id.text);

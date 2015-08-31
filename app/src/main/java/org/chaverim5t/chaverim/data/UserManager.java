@@ -20,4 +20,12 @@ public class UserManager {
   public boolean isResponder() {
     return true;
   }
+
+  public String userID() {
+    return "T21";
+  }
+  
+  public String userName() {
+    return "Shlomo Markowitz";
+  }
 }
