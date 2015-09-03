@@ -13,5 +13,6 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_call"/>
+        android:src="@android:drawable/ic_menu_call"
+        android:id="@+id/image"/>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package org.chaverim5t.chaverim.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,9 +42,29 @@ public class Call {
     return new Message();
   }
 
-  public Call() { }
+  public Call() {
+    title = "";
+    callNumber = 0;
+    callerName = "";
+    callerNumber = "";
+    callId = 0;
+    createdTime = new Date();
+    updatedTime = new Date();
+    disptacherName = "";
+    notes = "";
+    vehicle = "";
+    location = "";
+    problem = "";
+    region = "F";
+    status = "Open";
+    urgent = false;
+    voiceNotes = new ArrayList<>();
+    messages = new ArrayList<>();
+    coverage = new ArrayList<>();
+  }
 
   public Call(String title) {
+    this();
     this.title = title;
   }
 }

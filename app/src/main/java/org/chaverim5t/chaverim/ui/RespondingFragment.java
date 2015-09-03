@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import org.chaverim5t.chaverim.data.CallManager;
  */
 public class RespondingFragment extends Fragment {
 
+  private static final String TAG = RespondingFragment.class.getSimpleName();
   private RecyclerView recyclerView;
   private TextView notRespondingTextView;
 
@@ -142,6 +145,11 @@ public class RespondingFragment extends Fragment {
     public void onBindViewHolder(RespondingTileViewHolder holder, int position) {
       Call call = callManager.myRespondingCalls().get(position);
       holder.title.setText(call.title);
+      holder.callNumber.setText(Integer.toString(call.callNumber));
+      holder.callerName.setText(call.callerName + " - " + call.callerNumber);
+      holder.locationTextView.setText(call.location);
+      holder.vehicleTextView.setText(call.vehicle);
+
     }
 
     /**
@@ -156,10 +164,42 @@ public class RespondingFragment extends Fragment {
 
     class RespondingTileViewHolder extends RecyclerView.ViewHolder {
       public TextView title;
+      public TextView callNumber;
+      public ImageView icon;
+      public TextView callerName;
+      public View callerNameView;
+      public TextView locationTextView;
+      public View locationView;
+      public TextView vehicleTextView;
+      public TextView requestBackup;
+      public TextView callComplete;
 
       public RespondingTileViewHolder(View itemView) {
         super(itemView);
         title = (TextView)itemView.findViewById(R.id.title_text);
+        callNumber = (TextView) itemView.findViewById(R.id.call_number_text);
+
+        callerNameView = itemView.findViewById(R.id.text_and_image_caller_info);
+        callerName = (TextView) callerNameView.findViewById(R.id.text);
+
+        locationView = itemView.findViewById(R.id.text_and_image_location);
+        locationTextView = (TextView) locationView.findViewById(R.id.text);
+
+        View vehicleView = itemView.findViewById(R.id.text_and_image_vehicle);
+        vehicleTextView = (TextView) vehicleView.findViewById(R.id.text);
+        View vehicleImageView = vehicleView.findViewById(R.id.image);
+        if (vehicleImageView != null) {
+          Log.e(TAG, "Couldn't find vehicleImageView!");
+          vehicleImageView.setVisibility(View.GONE);
+        }
+
+        View requestBackupView = itemView.findViewById(R.id.image_and_text_request_backup);
+        requestBackup = (TextView) requestBackupView.findViewById(R.id.text);
+        requestBackup.setText("Request Backup");
+
+        View completeView = itemView.findViewById(R.id.image_and_text_call_complete);
+        TextView completeTextView = (TextView) completeView.findViewById(R.id.text);
+        completeTextView.setText("Complete");
       }
     }
   }

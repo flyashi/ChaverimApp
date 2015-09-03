@@ -52,11 +52,11 @@
                     android:id="@+id/call_number_text"/>
             </LinearLayout>
             <View style="@style/Divider" />
-            <include layout="@layout/text_and_image" />
+            <include layout="@layout/text_and_image" android:id="@+id/text_and_image_caller_info"/>
             <View style="@style/Divider" />
-            <include layout="@layout/text_and_image" />
+            <include layout="@layout/text_and_image" android:id="@+id/text_and_image_location" />
             <View style="@style/Divider" />
-            <include layout="@layout/text_and_image" />
+            <include layout="@layout/text_and_image"  android:id="@+id/text_and_image_vehicle"/>
             <View style="@style/Divider" />
 
             <FrameLayout
@@ -65,12 +65,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Group chat is available only when other units are responding."/>
+                    android:text="Group chat is available only when other units are responding."
+                    android:id="@+id/group_chat_not_available_text"/>
 
             </FrameLayout>
             <View style="@style/Divider" />
-
-            <include layout="@layout/text_and_image" />
+            <include layout="@layout/image_and_text"  android:id="@+id/image_and_text_request_backup"/>
+            <View style="@style/Divider" />
+            <include layout="@layout/image_and_text"  android:id="@+id/image_and_text_call_complete"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

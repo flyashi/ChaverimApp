@@ -13,6 +13,29 @@ public class UserManager {
     return userManager;
   }
 
+  public UserManager() {
+    signedIn = false;
+  }
+
+  private boolean signedIn;
+  private String userID;
+  private String userName;
+
+  public void fakeSignIn() {
+    signedIn = true;
+    userID = "T21";
+    userName = "Shlomo Markowitz";
+  }
+
+  public void signOut() {
+    signedIn = false;
+    userID = "x - logged out";
+    userName = "xx - logged out";
+  }
+  public boolean isSignedIn() {
+    return signedIn;
+  }
+
   public boolean isDispatcher() {
     return true;
   }
@@ -22,10 +45,10 @@ public class UserManager {
   }
 
   public String userID() {
-    return "T21";
+    return userID;
   }
-  
+
   public String userName() {
-    return "Shlomo Markowitz";
+    return userName;
   }
 }
