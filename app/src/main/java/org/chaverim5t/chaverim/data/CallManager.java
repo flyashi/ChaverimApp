@@ -48,7 +48,7 @@ public class CallManager {
     call.voiceNotes = Arrays.asList(voiceNote);
 
     Call.Message message = call.newMessage();
-    message.date = (new GregorianCalendar(2015, 12, 12, 8, 44, 24)).getTime();
+    message.timestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 24)).getTimeInMillis();
     message.message = "[6] B: BOOST For a member @ BAY 24 & MOTT Black Town & Country T21";
     call.messages = Arrays.asList(message);
 

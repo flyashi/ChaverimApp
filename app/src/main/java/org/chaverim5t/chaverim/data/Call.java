@@ -32,7 +32,7 @@ public class Call {
 
 
   class Message {
-    public Date date;
+    public long timestamp;
     public String message;
 
     public Message() {}
