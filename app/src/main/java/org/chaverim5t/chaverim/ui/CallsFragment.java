@@ -29,7 +29,7 @@ public class CallsFragment extends Fragment {
   private RecyclerView recyclerView;
   private TextView noCallsTextView;
 
-  private CallManager callManager = CallManager.getCallManager();
+  private CallManager callManager = CallManager.getCallManager(getContext());
 
   private CallsViewAdapter callsViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;

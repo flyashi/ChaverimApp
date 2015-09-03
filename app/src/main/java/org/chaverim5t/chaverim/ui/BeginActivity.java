@@ -11,12 +11,12 @@ import org.chaverim5t.chaverim.data.UserManager;
 
 public class BeginActivity extends AppCompatActivity {
 
-  private UserManager userManager = UserManager.getUserManager();
+  private UserManager userManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+    userManager = UserManager.getUserManager(this.getApplicationContext());
     if (userManager.isSignedIn()) {
       Intent intent = new Intent(getApplicationContext(), MainActivity.class);
       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

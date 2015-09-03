@@ -18,8 +18,8 @@ import org.chaverim5t.chaverim.data.UserManager;
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";
-  private UserManager userManager = UserManager.getUserManager();
-  private CallManager callManager = CallManager.getCallManager();
+  private UserManager userManager = UserManager.getUserManager(this);
+  private CallManager callManager = CallManager.getCallManager(this);
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide

@@ -22,7 +22,7 @@ import org.chaverim5t.chaverim.data.UserManager;
 @TargetApi(11)
 public class SettingsSubFragment extends PreferenceFragment {
 
-  private final UserManager userManager = UserManager.getUserManager();
+  private UserManager userManager;
 
   public SettingsSubFragment() {
     // Required empty public constructor
@@ -31,6 +31,7 @@ public class SettingsSubFragment extends PreferenceFragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    userManager = UserManager.getUserManager(getActivity());
     if (userManager.isDispatcher() && userManager.isResponder()) {
       addPreferencesFromResource(R.xml.pref_dispatcher_and_responder);
     } else if (userManager.isDispatcher()) {

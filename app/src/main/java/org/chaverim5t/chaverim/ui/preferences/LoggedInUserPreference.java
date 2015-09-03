@@ -18,7 +18,7 @@ import org.w3c.dom.Text;
  * Created by yakov on 8/27/15.
  */
 public class LoggedInUserPreference extends Preference {
-  UserManager userManager = UserManager.getUserManager();
+  UserManager userManager = UserManager.getUserManager(getContext());
 
   public LoggedInUserPreference(Context context) {
     super(context);

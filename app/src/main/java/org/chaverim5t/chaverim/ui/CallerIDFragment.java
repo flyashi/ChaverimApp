@@ -26,7 +26,7 @@ public class CallerIDFragment extends Fragment {
   private RecyclerView recyclerView;
   private TextView noHotlineCallsTextView;
 
-  private CallManager callManager = CallManager.getCallManager();
+  private CallManager callManager = CallManager.getCallManager(getContext());
 
   private CallerIDViewAdapter callerIDViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;

@@ -137,7 +137,7 @@ public class LoginActivity extends Activity {
 
     // just do the fake login
     // TODO(yakov): Do the real login!
-    UserManager.getUserManager().fakeSignIn();
+    UserManager.getUserManager(this).fakeSignIn();
     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
     // prevent back
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

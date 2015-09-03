@@ -1,5 +1,7 @@
 package org.chaverim5t.chaverim.data;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
@@ -10,16 +12,17 @@ import java.util.List;
  */
 public class CallManager {
   private static CallManager callManager;
-  private UserManager userManager = UserManager.getUserManager();
+  private UserManager userManager;
 
-  public static CallManager getCallManager() {
+  public static CallManager getCallManager(Context context) {
     if (callManager == null) {
-      callManager = new CallManager();
+      callManager = new CallManager(context);
     }
     return callManager;
   }
 
-  public CallManager() {
+  public CallManager(Context context) {
+    userManager = UserManager.getUserManager(context);
     callsList = new ArrayList<>();
     Call call = new Call("Boost in Bayswater");
     call.coverage = Arrays.asList("T21", "W36");

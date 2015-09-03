@@ -28,7 +28,7 @@ public class RespondingFragment extends Fragment {
   private RecyclerView recyclerView;
   private TextView notRespondingTextView;
 
-  private CallManager callManager = CallManager.getCallManager();
+  private CallManager callManager = CallManager.getCallManager(getContext());
 
   private RespondingViewAdapter respondingViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;
