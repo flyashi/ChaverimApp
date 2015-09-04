@@ -1,5 +1,6 @@
 package org.chaverim5t.chaverim.ui;
 
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.astuetz.PagerSlidingTabStrip;
+//import com.astuetz.PagerSlidingTabStrip;
 
 import org.chaverim5t.chaverim.data.CallManager;
 import org.chaverim5t.chaverim.R;
@@ -48,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
     // Set up the ViewPager with the sections adapter.
     mViewPager = (ViewPager) findViewById(R.id.pager);
     mViewPager.setAdapter(mSectionsPagerAdapter);
-
+/*
     PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
     tabs.setViewPager(mViewPager);
     tabs.setShouldExpand(true);
+    */
+    TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+    tabLayout.setupWithViewPager(mViewPager);
+    setTabsFromIconTabProvider(tabLayout, mSectionsPagerAdapter);
   }
 
 
@@ -77,11 +82,24 @@ public class MainActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
+  private void setTabsFromIconTabProvider(TabLayout tabLayout, IconTabProvider iconTabProvider) {
+    for (int i = 0; i < iconTabProvider.getCount(); i++) {
+      tabLayout.getTabAt(i).setIcon(iconTabProvider.getPageIconResId(i));
+      tabLayout.getTabAt(i).setText("");
+    }
+  }
+
   /**
    * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
    * one of the sections/tabs/pages.
    */
-  public class SectionsPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+
+  interface IconTabProvider {
+    int getCount();
+    int getPageIconResId(int i);
+  }
+
+  public class SectionsPagerAdapter extends FragmentPagerAdapter implements IconTabProvider {
 
     public SectionsPagerAdapter(FragmentManager fm) {
       super(fm);
@@ -163,5 +181,6 @@ public class MainActivity extends AppCompatActivity {
       return resources[i + skip];
     }
   }
+  //*/
 
 }
