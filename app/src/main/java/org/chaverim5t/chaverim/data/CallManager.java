@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Stores, updates, retrieves, and provides {@link Call} objects.
+ * Stores, updates, retrieves, and provides {@link Call} objects. Currently uses only fake data.
  */
 public class CallManager {
   private static CallManager callManager;
@@ -30,8 +30,8 @@ public class CallManager {
     call.callerNumber = "7185556789";
     call.callId = 1723;
     call.callNumber = 6;
-    call.createdTime = (new GregorianCalendar(2015, 12, 12, 8, 44, 23)).getTime();
-    call.updatedTime = (new GregorianCalendar(2015, 12, 12, 8, 45, 55)).getTime();
+    call.createdTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 23)).getTimeInMillis();
+    call.updatedTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 45, 55)).getTimeInMillis();
     call.disptacherName = "T21";
     call.notes = "For a member";
     call.vehicle = "Black Town & Country";

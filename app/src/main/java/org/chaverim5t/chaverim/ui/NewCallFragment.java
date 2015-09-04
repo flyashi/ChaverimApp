@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import org.chaverim5t.chaverim.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that allows a dispatcher to enter call details and dispatch the call.
  */
 public class NewCallFragment extends Fragment {
 

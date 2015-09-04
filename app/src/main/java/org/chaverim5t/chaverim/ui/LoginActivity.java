@@ -33,11 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via SMS or username and password.
+ *
+ * NOTE: There's a LOT of unneeded boilerplate left over from Android Studio's default LoginAcivity.
+ * I removed all the Loaders since we have at least one user on API 10; we'll have to settle for
+ * {@link AsyncTask}s. However there's still a lot of boilerplate left.
  */
 public class LoginActivity extends Activity {
-
-
 
   /**
    * A dummy authentication store containing known user names and passwords.
@@ -94,7 +96,8 @@ public class LoginActivity extends Activity {
     verifyButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        // TODO(yakov): Change to VerifyActivity.class
+        UserManager.getUserManager(getApplicationContext()).fakeSignIn();
+        // TODO(yakov): Change to VerifyActivity.class, once that's implemented!
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         // prevent back
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

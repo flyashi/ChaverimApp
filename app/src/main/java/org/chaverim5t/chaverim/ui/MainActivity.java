@@ -10,12 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-//import com.astuetz.PagerSlidingTabStrip;
-
 import org.chaverim5t.chaverim.data.CallManager;
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
 
+/**
+ * The activity that users will be interacting with most often. It contains an action bar, a
+ * {@link TabLayout}, and a {@link ViewPager}.
+ */
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";

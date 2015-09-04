@@ -17,7 +17,8 @@ import org.chaverim5t.chaverim.R;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Shows either a Text View showing that settings aren't available below API 11 (Android 3.0), or
+ * the settings via a {@link SettingsSubFragment}.
  */
 public class SettingsFragment extends Fragment {
 
@@ -28,6 +29,8 @@ public class SettingsFragment extends Fragment {
   }
 
 
+  // From StackOverflow - when a fragment within a fragment goes out of view and reappears, don't
+  // recreate it if not necessary.
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class SettingsFragment extends Fragment {
         settingsFragment.setVisibility(View.GONE);
       }
     } catch (InflateException e) {
-        /* map is already there, just return view as it is */
+        /* Fragment is already there, just return view as it is */
     }
 
     return view;

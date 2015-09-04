@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import org.chaverim5t.chaverim.R;
 
+/**
+ * Preference that allows the user to call the Chaverim Responder hotline.
+ */
 public class CallResponderHotlinePreference extends Preference {
   public CallResponderHotlinePreference(Context context, AttributeSet attrs) {
     super(context, attrs);

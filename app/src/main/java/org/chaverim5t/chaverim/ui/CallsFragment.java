@@ -21,7 +21,10 @@ import org.chaverim5t.chaverim.data.CallManager;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that displays open and recent dispatched calls for assistance in a
+ * {@link RecyclerView} with {@link android.support.v7.widget.CardView} tiles. Each tile displays
+ * information about the call, with options which vary based on permissions. For example, responders
+ * can respond to a call, and dispatchers can cancel or edit the call.
  */
 public class CallsFragment extends Fragment {
 

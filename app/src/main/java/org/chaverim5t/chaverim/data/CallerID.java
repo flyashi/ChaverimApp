@@ -1,14 +1,18 @@
 package org.chaverim5t.chaverim.data;
 
 /**
- * Created by yakov on 8/20/15.
+ * Models a phone call to the Chaverim hotline.
  */
 public class CallerID {
   public String phoneNumber;
+  public long timestamp;
 
-  public CallerID() {}
+  public CallerID() {
+    timestamp = 1234567890123l;  // millis!
+  }
 
   public CallerID(String phoneNumber) {
+    this();
     this.phoneNumber = phoneNumber;
   }
 }

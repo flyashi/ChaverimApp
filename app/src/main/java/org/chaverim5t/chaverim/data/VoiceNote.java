@@ -1,7 +1,8 @@
 package org.chaverim5t.chaverim.data;
 
 /**
- * Created by yakov on 8/31/15.
+ * Models a voice note left by a responder on a call. This class will eventually be able to fetch
+ * the call.
  */
 public class VoiceNote {
   public long noteID;

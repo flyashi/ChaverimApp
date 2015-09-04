@@ -15,7 +15,7 @@ import org.chaverim5t.chaverim.ui.MainActivity;
 import org.w3c.dom.Text;
 
 /**
- * Created by yakov on 8/27/15.
+ * Preference that displays the currently logged in user, and allows the user to sign out.
  */
 public class LoggedInUserPreference extends Preference {
   UserManager userManager = UserManager.getUserManager(getContext());

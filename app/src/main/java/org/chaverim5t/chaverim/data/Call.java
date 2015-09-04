@@ -5,14 +5,18 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by yakov on 8/17/15.
+ * Models a single dispatched call for assistance.
+ *
+ * Calls can have multiple status updates, each of which usually has an associated message.
+ * Responders can leave voice notes on a call.
+ * Responders can cover a call, which is modeled by adding their unit ID string to {@code coverage}.
  */
 public class Call {
   public String title;
   public int callNumber;
   public long callId;
-  public Date createdTime;
-  public Date updatedTime;
+  public long createdTimestamp;
+  public long updatedTimestamp;
   public String disptacherName;
   public String callerName;
   public String callerNumber;
@@ -48,8 +52,8 @@ public class Call {
     callerName = "";
     callerNumber = "";
     callId = 0;
-    createdTime = new Date();
-    updatedTime = new Date();
+    createdTimestamp = 1234567890123l;
+    updatedTimestamp = 1234567890124l;
     disptacherName = "";
     notes = "";
     vehicle = "";

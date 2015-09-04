@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by yakov on 8/11/15.
+ * Manages the logged in user. Currently only provides the userID, user name, whether or not the
+ * user is a dispatcher, and whether or not the user is a responder, as well as {@link #fakeSignIn}
+ * and {@link #signOut}.
  */
 public class UserManager {
   private static final String USER_MANAGER_PREFS_NAME = "MyPrefsFile";

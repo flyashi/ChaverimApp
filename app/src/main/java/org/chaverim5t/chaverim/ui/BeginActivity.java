@@ -9,6 +9,10 @@ import android.widget.Button;
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
 
+/**
+ * The first activity that appears when the app is launched. It provides some text info and a
+ * button to proceed to the Login screen.
+ */
 public class BeginActivity extends AppCompatActivity {
 
   private UserManager userManager;
@@ -31,8 +35,8 @@ public class BeginActivity extends AppCompatActivity {
       public void onClick(View v) {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
-        // to prevent back (do we want to prevent it here?):
-        // Answer: No.
+        // To prevent back, uncomment this.
+        // Here, we don't want to prevent back, so this is commented.
         /*
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();

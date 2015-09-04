@@ -18,7 +18,8 @@ import org.chaverim5t.chaverim.data.CallerID;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that displays a {@link RecyclerView} of recent calls to the hotline, and allows the
+ * user to call back the caller.
  */
 public class CallerIDFragment extends Fragment {
 

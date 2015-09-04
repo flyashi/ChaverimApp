@@ -20,7 +20,8 @@ import org.chaverim5t.chaverim.data.CallManager;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that contains a {@link RecyclerView} with {@link android.support.v7.widget.CardView}s
+ * for the calls the user is responding to. Only shown to responders.
  */
 public class RespondingFragment extends Fragment {
 

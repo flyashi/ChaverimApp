@@ -22,10 +22,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_quick_button_height"
             android:orientation="horizontal">
+            <!-- TODO(yakov): Update these images! -->
             <ImageView
                 android:layout_width="@dimen/new_call_quick_button_width"
                 android:layout_height="@dimen/new_call_quick_button_height"
-                android:src="@drawable/ic_call_black_24dp"/>
+                android:src="@drawable/ic_call_black_24dp" />
             <ImageView
                 android:layout_width="@dimen/new_call_quick_button_width"
                 android:layout_height="@dimen/new_call_quick_button_height"
@@ -69,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_call_area_label_height"
             android:orientation="horizontal">
+            <!-- TODO(yakov): Make the "selected" one change when clicked -->
             <TextView
                 android:id="@+id/new_call_area_b"
                 android:text="B"

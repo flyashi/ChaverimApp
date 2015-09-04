@@ -8,6 +8,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <!-- Only one of these will be shown at a time. -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

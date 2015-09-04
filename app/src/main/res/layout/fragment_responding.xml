@@ -2,10 +2,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/responding_swipe_refresh">
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <!-- TODO(yakov): Only one of these will be displayed at a time. -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -16,8 +17,7 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:scrollbars="vertical"
             android:id="@+id/responding_recycler_view"/>
-    </LinearLayout>
+    </FrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
