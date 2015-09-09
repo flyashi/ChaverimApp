@@ -29,7 +29,7 @@ public class CallManager {
     call.callerName = "FRANK";
     call.callerNumber = "7185556789";
     call.callId = 1723;
-    call.callNumber = 6;
+    call.callNumber = 7;
     call.createdTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 23)).getTimeInMillis();
     call.updatedTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 45, 55)).getTimeInMillis();
     call.disptacherName = "T21";
@@ -53,12 +53,12 @@ public class CallManager {
     call.messages = Arrays.asList(message);
 
     callsList.add(call);
-    callsList.add(new Call("Flat in Far Rockaway"));
-    callsList.add(new Call("Car L/O in Cedarhurst"));
-    callsList.add(new Call("House L/O in Hewlett"));
-    callsList.add(new Call("Minyan needed in Mineola"));
-    callsList.add(new Call("Ignition problem in Inwood"));
-    callsList.add(new Call("Out of Gas in Oceanside"));
+    callsList.add(new Call(1, "Flat in Far Rockaway"));
+    callsList.add(new Call(2, "Car L/O in Cedarhurst"));
+    callsList.add(new Call(3, "House L/O in Hewlett"));
+    callsList.add(new Call(4, "Minyan needed in Mineola"));
+    callsList.add(new Call(5, "Ignition problem in Inwood"));
+    callsList.add(new Call(6, "Out of Gas in Oceanside"));
 
     callerIDList = new ArrayList<>();
     callerIDList.add(new CallerID("(718) 555-7212"));

@@ -71,4 +71,9 @@ public class Call {
     this();
     this.title = title;
   }
+
+  public Call(int callNumber, String title) {
+    this(title);
+    this.callNumber = callNumber;
+  }
 }

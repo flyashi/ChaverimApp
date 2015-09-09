@@ -7,17 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.Call;
 import org.chaverim5t.chaverim.data.CallManager;
+import org.chaverim5t.chaverim.data.UserManager;
 
 
 /**
@@ -32,7 +33,8 @@ public class CallsFragment extends Fragment {
   private RecyclerView recyclerView;
   private TextView noCallsTextView;
 
-  private CallManager callManager = CallManager.getCallManager(getContext());
+  private CallManager callManager;
+  private UserManager userManager;
 
   private CallsViewAdapter callsViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;
@@ -44,7 +46,12 @@ public class CallsFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
+
+    callManager = CallManager.getCallManager(getContext());
+    userManager = UserManager.getUserManager(getContext());
+
     // Inflate the layout for this fragment
+
     View view = inflater.inflate(R.layout.fragment_calls, container, false);
     noCallsTextView = (TextView) view.findViewById(R.id.no_calls_text_view);
     recyclerView = (RecyclerView) view.findViewById(R.id.calls_recycler_view);
@@ -141,8 +148,96 @@ public class CallsFragment extends Fragment {
      */
     @Override
     public void onBindViewHolder(CallTileViewHolder holder, int position) {
-      Call call = callManager.getAllCalls().get(position);
+      final Call call = callManager.getAllCalls().get(position);
       holder.title.setText(call.title);
+      holder.callNumberText.setText(Integer.toString(call.callNumber));
+      if (userManager.isDispatcher()) {
+        holder.callerNameNumberView.setVisibility(View.VISIBLE);
+        holder.callerNameNumberText.setText(call.callerName + " - " + call.callerNumber);
+      } else {
+        holder.callerNameNumberView.setVisibility(View.GONE);
+      }
+      holder.locationText.setText(call.location);
+      if (userManager.isResponder()) {
+        holder.durationView.setVisibility(View.VISIBLE);
+        holder.durationText.setText("(unknown duration");
+        holder.durationText.setTextAppearance(android.R.style.TextAppearance_Small);
+      } else {
+        holder.durationView.setVisibility(View.GONE);
+      }
+      holder.vehicleText.setText(call.vehicle);
+
+      if (userManager.isResponder()) {
+        holder.actionRespondView.setVisibility(View.VISIBLE);
+        holder.actionRespondImage.setImageResource(R.drawable.ic_directions_run_black_24dp);
+        if (callManager.myRespondingCalls().contains(call)) {
+          /* user is already responding... */
+          holder.actionRespondText.setText("You are responding");
+          holder.actionRespondView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              ((MainActivity) getActivity()).mViewPager.setCurrentItem(0 /* first page */, true /* smooth scroll */);
+            }
+          });
+        } else {
+          holder.actionRespondText.setText("Respond");
+          holder.actionRespondView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              call.coverage.add(userManager.userID());
+              callManager.updateRespondingList();
+              ((MainActivity) getActivity()).mViewPager.setCurrentItem(0 /* first page */, true /* smooth scroll */);
+            }
+          });
+        }
+      } else {
+        holder.actionRespondView.setVisibility(View.GONE);
+      } /* isResponder*/
+
+      if (userManager.isDispatcher()) {
+        holder.actionCancelReopenView.setVisibility(View.VISIBLE);
+        holder.actionEditView.setVisibility(View.VISIBLE);
+
+        holder.actionEditImage.setImageResource(R.drawable.ic_create_black_24dp);
+        holder.actionEditText.setText("Edit");
+        holder.actionEditView.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            // TODO(yakov): Implement edit!
+            Toast.makeText(getContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+          }
+        });
+
+        // TODO(yakov): Make this more robust
+        if (call.status == "Open") {
+          // TODO(yakov): Get a good "cancel" icon
+          holder.actionCancelReopenImage.setImageResource(R.drawable.ic_settings_black_24dp);
+          holder.actionCancelReopenText.setText("Cancel");
+          holder.actionCancelReopenView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              call.status = "Canceled";
+              recyclerView.getAdapter().notifyDataSetChanged();
+              Toast.makeText(getContext(), "Canceled", Toast.LENGTH_LONG).show();
+            }
+          });
+        } else {
+          // TODO(yakov): Get a good "reopen" icon
+          holder.actionCancelReopenImage.setImageResource(android.R.drawable.ic_menu_revert);
+          holder.actionCancelReopenText.setText("Reopen");
+          holder.actionCancelReopenView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              call.status = "Open";
+              recyclerView.getAdapter().notifyDataSetChanged();
+              Toast.makeText(getContext(), "Reopened", Toast.LENGTH_LONG).show();
+            }
+          });
+        }
+      } else {
+        holder.actionCancelReopenView.setVisibility(View.GONE);
+        holder.actionEditView.setVisibility(View.GONE);
+      }
     }
 
     /**
@@ -157,10 +252,61 @@ public class CallsFragment extends Fragment {
 
     class CallTileViewHolder extends RecyclerView.ViewHolder {
       public TextView title;
+      public ImageView callTypeImage;
+      public TextView callNumberText;
+      public View callerNameNumberView;
+      public TextView callerNameNumberText;
+      public View locationView;
+      public TextView locationText;
+      public View durationView;
+      public TextView durationText;
+      public TextView vehicleText;
+      public View actionRespondView;
+      public TextView actionRespondText;
+      public ImageView actionRespondImage;
+      public View actionCancelReopenView;
+      public TextView actionCancelReopenText;
+      public ImageView actionCancelReopenImage;
+      public View actionEditView;
+      public TextView actionEditText;
+      public ImageView actionEditImage;
 
       public CallTileViewHolder(View itemView) {
         super(itemView);
+
+        // Text views
+
         this.title = (TextView) itemView.findViewById(R.id.title_text);
+        this.callTypeImage = (ImageView) itemView.findViewById(R.id.call_type_image);
+        this.callNumberText = (TextView) itemView.findViewById(R.id.call_number_text);
+        this.callerNameNumberView = itemView.findViewById(R.id.caller_name_and_number_text_and_image);
+        this.callerNameNumberText = (TextView) callerNameNumberView.findViewById(R.id.text);
+        ((ImageView) callerNameNumberView.findViewById(R.id.image)).setImageResource(R.drawable.ic_call_black_24dp);
+        this.locationView = itemView.findViewById(R.id.call_location_text_and_image);
+        this.locationText = (TextView) locationView.findViewById(R.id.text);
+        ((ImageView) locationView.findViewById(R.id.image)).setImageResource(android.R.drawable.ic_menu_mapmode);
+        this.durationView = itemView.findViewById(R.id.duration_layout);
+        this.durationText = (TextView) durationView.findViewById(R.id.text);
+        durationView.findViewById(R.id.image).setVisibility(View.GONE);
+
+        View vehicleView = itemView.findViewById(R.id.vehicle_text_and_image);
+        this.vehicleText = (TextView) vehicleView.findViewById(R.id.text);
+        // TODO(yakov): Show a small picture of the type of vehicle? Pre-load the top 20? Google Web Search & pull the first one?
+        vehicleView.findViewById(R.id.image).setVisibility(View.GONE);
+
+        // Action buttons
+
+        this.actionRespondView = itemView.findViewById(R.id.action_row_respond);
+        this.actionRespondText = (TextView) actionRespondView.findViewById(R.id.text);
+        this.actionRespondImage = (ImageView) actionRespondView.findViewById(R.id.image);
+
+        this.actionCancelReopenView = itemView.findViewById(R.id.action_row_cancel_reopen);
+        this.actionCancelReopenText = (TextView) actionCancelReopenView.findViewById(R.id.text);
+        this.actionCancelReopenImage = (ImageView) actionCancelReopenView.findViewById(R.id.image);
+
+        this.actionEditView = itemView.findViewById(R.id.action_row_edit);
+        this.actionEditText = (TextView) actionEditView.findViewById(R.id.text);
+        this.actionEditImage = (ImageView) actionEditView.findViewById(R.id.image);
       }
     }
   }
