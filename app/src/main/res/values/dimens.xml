@@ -2,8 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="new_call_quick_button_height">80dp</dimen>
-    <dimen name="new_call_quick_button_width">80dp</dimen>
+    <dimen name="new_call_quick_button_height">64dp</dimen>
+    <dimen name="new_call_quick_button_width">64dp</dimen>
     <dimen name="new_call_call_area_label_height">36dp</dimen>
     <dimen name="tile_list_padding_vertical">5dp</dimen>
     <dimen name="tile_list_padding_horizontal">5dp</dimen>

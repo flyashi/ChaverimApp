@@ -1,6 +1,7 @@
 package org.chaverim5t.chaverim.ui;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.Call;
 import org.chaverim5t.chaverim.data.CallManager;
 import org.chaverim5t.chaverim.data.UserManager;
+
+import java.util.Objects;
 
 
 /**
@@ -149,6 +152,9 @@ public class CallsFragment extends Fragment {
     @Override
     public void onBindViewHolder(CallTileViewHolder holder, int position) {
       final Call call = callManager.getAllCalls().get(position);
+      if (call.problem.equals("Flat")) {
+        holder.callTypeImage.setImageResource(R.drawable.flat);
+      }
       holder.title.setText(call.title);
       holder.callNumberText.setText(Integer.toString(call.callNumber));
       if (userManager.isDispatcher()) {
@@ -161,7 +167,11 @@ public class CallsFragment extends Fragment {
       if (userManager.isResponder()) {
         holder.durationView.setVisibility(View.VISIBLE);
         holder.durationText.setText("(unknown duration");
-        holder.durationText.setTextAppearance(android.R.style.TextAppearance_Small);
+        if (Build.VERSION.SDK_INT >= 23) {
+          holder.durationText.setTextAppearance(android.R.style.TextAppearance_Small);
+        } else {
+          // TODO(yakov): Make the text small on other devices.
+        }
       } else {
         holder.durationView.setVisibility(View.GONE);
       }
@@ -209,7 +219,7 @@ public class CallsFragment extends Fragment {
         });
 
         // TODO(yakov): Make this more robust
-        if (call.status == "Open") {
+        if (call.status.equals("Open")) {
           // TODO(yakov): Get a good "cancel" icon
           holder.actionCancelReopenImage.setImageResource(R.drawable.ic_settings_black_24dp);
           holder.actionCancelReopenText.setText("Cancel");

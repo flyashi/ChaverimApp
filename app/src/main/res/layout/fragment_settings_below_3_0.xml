@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.chaverim5t.chaverim.ui.SettingsFragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings are only available on Android 3.0 and up."
+        android:textAppearance="?android:textAppearanceLarge"
+        android:id="@+id/settings_only_on_android_30_and_up_text"/>
+
+</FrameLayout>

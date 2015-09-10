@@ -13,11 +13,7 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
-    <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="New Call"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_quick_button_height"
@@ -26,19 +22,32 @@
             <ImageView
                 android:layout_width="@dimen/new_call_quick_button_width"
                 android:layout_height="@dimen/new_call_quick_button_height"
-                android:src="@drawable/ic_call_black_24dp" />
+                android:src="@drawable/flat"
+                android:layout_marginRight="8dp"
+                android:id="@+id/quick_button_flat"/>
             <ImageView
                 android:layout_width="@dimen/new_call_quick_button_width"
                 android:layout_height="@dimen/new_call_quick_button_height"
-                android:src="@drawable/ic_call_black_24dp"/>
+                android:src="@drawable/boost"
+                android:layout_marginRight="8dp"
+                android:id="@+id/quick_button_boost"/>
             <ImageView
                 android:layout_width="@dimen/new_call_quick_button_width"
                 android:layout_height="@dimen/new_call_quick_button_height"
-                android:src="@drawable/ic_call_black_24dp"/>
+                android:src="@drawable/car_lockout"
+                android:layout_marginRight="8dp"
+                android:id="@+id/quick_button_car_lockout"/>
             <ImageView
                 android:layout_width="@dimen/new_call_quick_button_width"
                 android:layout_height="@dimen/new_call_quick_button_height"
-                android:src="@drawable/ic_call_black_24dp"/>
+                android:src="@drawable/house_lockout"
+                android:layout_marginRight="8dp"
+                android:id="@+id/quick_button_house_lockout"/>
+            <ImageView
+                android:layout_width="@dimen/new_call_quick_button_width"
+                android:layout_height="@dimen/new_call_quick_button_height"
+                android:src="@drawable/dot_dot_dot"
+                android:id="@+id/quick_button_more"/>
         </LinearLayout>
         <AutoCompleteTextView
             android:id="@+id/problem_text"

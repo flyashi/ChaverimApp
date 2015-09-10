@@ -18,7 +18,7 @@ import org.chaverim5t.chaverim.data.UserManager;
  * The activity that users will be interacting with most often. It contains an action bar, a
  * {@link TabLayout}, and a {@link ViewPager}.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity { /* auto-extends FragmentActivity */
 
   private static final String TAG = "MainActivity";
   private UserManager userManager = UserManager.getUserManager(this);
