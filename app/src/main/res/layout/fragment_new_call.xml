@@ -79,7 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_call_area_label_height"
             android:orientation="horizontal">
-            <!-- TODO(yakov): Make the "selected" one change when clicked -->
             <TextView
                 android:id="@+id/new_call_area_b"
                 android:text="B"
@@ -165,6 +164,14 @@
                 android:text="OTHER"
                 style="@style/newCallCallAreaTextStyle"/>
         </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Other Call Area"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:id="@+id/other_call_area_text"
+            />
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -175,6 +182,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CREATE AND DISPATCH"/>
+            android:text="CREATE AND DISPATCH"
+            android:id="@+id/create_and_dispatch_button"/>
     </LinearLayout>
 </ScrollView>
