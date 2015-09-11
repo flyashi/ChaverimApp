@@ -4,9 +4,14 @@ import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +29,8 @@ public class NewCallFragment extends Fragment {
 
   private int selectedQuickButtonIndex = -1;
   private TextView problemText;
-  private TextView otherCallAreaText;
+  private EditText otherCallAreaText;
+  private EditText note;
 
   private View.OnClickListener quickButtonOnClickListener;
 
@@ -83,8 +89,17 @@ public class NewCallFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_new_call, container, false);
 
     this.problemText = (TextView) view.findViewById(R.id.problem_text);
-    this.otherCallAreaText = (TextView) view.findViewById(R.id.other_call_area_text);
-
+    this.otherCallAreaText = (EditText) view.findViewById(R.id.other_call_area_text);
+    this.note = (EditText) view.findViewById(R.id.note);
+    note.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        EditText editText = (EditText) v;
+        editText.setClickable(true);
+        editText.setEnabled(true);
+        v.setOnClickListener(null);
+      }
+    });
     setupQuickButtons(view, savedInstanceState);
     setupCallAreaButtons(view, savedInstanceState);
     return view;
@@ -104,6 +119,10 @@ public class NewCallFragment extends Fragment {
       index = savedInstanceState.getInt("LAST_BUTTON", 0);
     }
     quickButtonOnClickListener.onClick(quickButtons.get(index));
+
+    // Setup More button
+    View moreQuickButton = quickButtons.get(quickButtons.size() - 1);
+    registerForContextMenu(moreQuickButton);
   }
 
   private void setupCallAreaButtons(View view, Bundle savedInstanceState) {
@@ -127,12 +146,40 @@ public class NewCallFragment extends Fragment {
     outState.putInt("LAST_AREA", selectedCallAreaButtonIndex);
   }
 
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v,
+                                  ContextMenu.ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    MenuInflater inflater = getActivity().getMenuInflater();
+    inflater.inflate(R.menu.more_call_problems, menu);
+  }
+
+  public boolean onContextItemSelected(MenuItem item) {
+    //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+    this.problemText.setText(item.getTitle());
+    /*
+    switch (item.getItemId()) {
+      case R.id.edit:
+        editNote(info.id);
+        return true;
+      case R.id.delete:
+        deleteNote(info.id);
+        return true;
+      default:
+        return super.onContextItemSelected(item);
+    }
+    */
+    return super.onContextItemSelected(item);
+  }
 
   private class QuickButtonOnClickListener implements ImageView.OnClickListener {
     @Override
     public void onClick(View v) {
       int index = quickButtons.indexOf(v);
       ImageView imageView = (ImageView)v;
+      if (imageView == quickButtons.get(quickButtons.size() - 1)) { // "More"
+        imageView.showContextMenu();
+      }
       if (index == selectedQuickButtonIndex) {
         // Already selected, do nothing.
         return;
@@ -145,13 +192,7 @@ public class NewCallFragment extends Fragment {
           quickButton.setColorFilter(null);
         }
       }
-      /*
-      if (imageView == quickButtons.get(quickButtons.size() - 1)) { // "More"
-        problemText.setVisibility(View.VISIBLE);
-      } else {
-        problemText.setVisibility(View.GONE);
-      }
-      */
+
       problemText.setText(quickButtonStrings[index]);
     }
   }

@@ -49,13 +49,16 @@
                 android:src="@drawable/dot_dot_dot"
                 android:id="@+id/quick_button_more"/>
         </LinearLayout>
-        <AutoCompleteTextView
+        <!-- Perhaps an AutoCompleteTextView? -->
+        <TextView
+            style="?android:editTextStyle"
             android:id="@+id/problem_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Problem"
             android:maxLines="1"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:inputType="none"/>
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,13 +71,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/caller_name_text"
-            android:hint="Name"/>
+            android:hint="Name"
+            android:maxLines="1"
+            android:singleLine="true"/>
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/caller_address"
             android:hint="Address"
-            android:inputType="textPostalAddress"/>
+            android:inputType="textPostalAddress"
+            android:maxLines="1"
+            android:singleLine="true"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_call_area_label_height"
@@ -179,6 +186,14 @@
             android:hint="Car color/make/model"
             android:maxLines="1"
             android:singleLine="true"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Click to Add Note - Sent to Members"
+            android:textSize="18dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:id="@+id/note"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
