@@ -2,10 +2,19 @@ package org.chaverim5t.chaverim.data;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+
+import org.chaverim5t.chaverim.util.NetworkUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Stores, updates, retrieves, and provides {@link Call} objects. Currently uses only fake data.
@@ -13,6 +22,8 @@ import java.util.List;
 public class CallManager {
   private static CallManager callManager;
   private UserManager userManager;
+  private SettingsManager settingsManager;
+  private NetworkUtils networkUtils;
 
   public static CallManager getCallManager(Context context) {
     if (callManager == null) {
@@ -22,7 +33,10 @@ public class CallManager {
   }
 
   public CallManager(Context context) {
+    settingsManager = SettingsManager.getSettingsManager(context);
     userManager = UserManager.getUserManager(context);
+    networkUtils = NetworkUtils.getNetworkUtils(context);
+
     callsList = new ArrayList<>();
     Call call = new Call("Boost in Bayswater");
     call.coverage = Arrays.asList("T21", "W36");
@@ -100,6 +114,69 @@ public class CallManager {
           }
         }
       }
+    }
+  }
+
+  public void createAndDispatch(String callerName, String callerNumber, String location,
+                                String problem, String area, String note, String vehicle) {
+    if (settingsManager.dispatchOnNewSystem()) {
+      // TODO(yakov): Switch to new system!
+    } else {
+      Map<String, String> params = makePostData(callerName, callerNumber, problem, location, area, vehicle, note);
+      MyRequest myRequest = new MyRequest(Request.Method.POST, "URL", null, null, params);
+      networkUtils.addRequest(myRequest);
+    }
+  }
+
+  // TODO(yakov): Remove this once no longer needed.
+  private Map<String, String> makePostData(String callerName, String callerNumber,
+                                           String problem, String location,
+                                           String area, String vehicle, String note) {
+    Map<String, String> map = new HashMap<>();
+
+    map.put("CallDispatcherID", userManager.oldDispatchSystemID());
+    map.put("CallAutoRouteToDispatcher", "1");
+    map.put("CallEmailDispatchArea", "9");
+    map.put("CallerName", callerName);
+    map.put("CallerPhoneNumber", callerNumber);
+    // TODO(yakov): Allow urgent calls!
+    map.put("CallIsUrgent", "0");
+    map.put("CallAutoSend", "1");
+    map.put("AC_CallDetails", problem);
+    map.put("CallDetails1", problem);
+    map.put("AC_AddPre", location);
+    // TODO(yakov): Apartment?
+    map.put("AC_apt", "");
+    // TODO(yakov): Cross streets?
+    map.put("Between1", "");
+    map.put("Between2", "");
+    map.put("Combination", "");
+    map.put("Area", area);
+    map.put("AC_AreaID", area);
+    map.put("AC_Color", "");
+    map.put("AC_Model", vehicle);
+    map.put("notes", note);
+    map.put("CallDetails", "");
+    map.put("AddPre", "");
+    map.put("apt", "");
+    map.put("AreaID", "");
+    map.put("Color", "");
+    map.put("Model", "");
+
+    return map;
+  }
+
+  class MyRequest extends StringRequest {
+    private Map<String, String> params;
+
+    public MyRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener, Map<String, String> params) {
+      super(method, url, listener, errorListener);
+      this.params = params;
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+      return params;
     }
   }
 }

@@ -51,10 +51,14 @@ public class UserManager {
   private String userID;
   private String userName;
 
+  // TODO(yakov): Remove!
+  private String oldDispatchSystemID;  // Dispatch 21 is "98"
+
   public void fakeSignIn() {
     signedIn = true;
     userID = "T21";
     userName = "Shlomo Markowitz";
+    oldDispatchSystemID = "98";
     saveSharedPreferences();
   }
 
@@ -82,5 +86,9 @@ public class UserManager {
 
   public String userName() {
     return userName;
+  }
+
+  public String oldDispatchSystemID() {
+    return oldDispatchSystemID;
   }
 }

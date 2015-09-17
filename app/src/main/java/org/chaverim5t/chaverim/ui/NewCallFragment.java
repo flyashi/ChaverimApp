@@ -24,6 +24,8 @@ import java.util.ArrayList;
  */
 public class NewCallFragment extends Fragment {
 
+  public static final String LAST_BUTTON_KEY = "LAST_BUTTON";
+  public static final String LAST_AREA_KEY = "LAST_AREA";
   private final LightingColorFilter quickButtonSelectedColorFilter =
       new LightingColorFilter(-1, 255);
 
@@ -31,6 +33,9 @@ public class NewCallFragment extends Fragment {
   private TextView problemText;
   private EditText otherCallAreaText;
   private EditText note;
+  private EditText callerNumber;
+  private EditText callerName;
+  private EditText callerLocation;  // R.id.caller_address
 
   private View.OnClickListener quickButtonOnClickListener;
 
@@ -88,7 +93,18 @@ public class NewCallFragment extends Fragment {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_new_call, container, false);
 
+    setupTextViews(view);
+    setupQuickButtons(view, savedInstanceState);
+    setupCallAreaButtons(view, savedInstanceState);
+
+    return view;
+  }
+
+  private void setupTextViews(View view) {
     this.problemText = (TextView) view.findViewById(R.id.problem_text);
+    this.callerName = (EditText) view.findViewById(R.id.caller_name_text);
+    this.callerNumber = (EditText) view.findViewById(R.id.caller_number_text);
+    this.callerLocation = (EditText) view.findViewById(R.id.caller_address);
     this.otherCallAreaText = (EditText) view.findViewById(R.id.other_call_area_text);
     this.note = (EditText) view.findViewById(R.id.note);
     note.setOnClickListener(new View.OnClickListener() {
@@ -100,9 +116,6 @@ public class NewCallFragment extends Fragment {
         v.setOnClickListener(null);
       }
     });
-    setupQuickButtons(view, savedInstanceState);
-    setupCallAreaButtons(view, savedInstanceState);
-    return view;
   }
 
   private void setupQuickButtons(View view, Bundle savedInstanceState) {
@@ -116,7 +129,7 @@ public class NewCallFragment extends Fragment {
 
     int index = 0;
     if (savedInstanceState != null) {
-      index = savedInstanceState.getInt("LAST_BUTTON", 0);
+      index = savedInstanceState.getInt(LAST_BUTTON_KEY, 0);
     }
     quickButtonOnClickListener.onClick(quickButtons.get(index));
 
@@ -135,14 +148,15 @@ public class NewCallFragment extends Fragment {
     }
     int index = 2; // Bayswater
     if (savedInstanceState != null) {
-      index = savedInstanceState.getInt("LAST_AREA", 2);
+      index = savedInstanceState.getInt(LAST_AREA_KEY, 2);
     }
     callAreaButtonOnClickListener.onClick(callAreaButtons.get(index));
   }
+
   @Override
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putInt("LAST_BUTTON", selectedQuickButtonIndex);
+    outState.putInt(LAST_BUTTON_KEY, selectedQuickButtonIndex);
     outState.putInt("LAST_AREA", selectedCallAreaButtonIndex);
   }
 
