@@ -14,6 +14,7 @@ import android.os.Build.VERSION;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
@@ -92,10 +94,16 @@ public class LoginActivity extends Activity {
       }
     });
 
-    Button verifyButton = (Button) findViewById(R.id.verify_sms_button);
+    final Button verifyButton = (Button) findViewById(R.id.verify_sms_button);
     verifyButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        /*
+        Snackbar snackbar = Snackbar.make(verifyButton, "Hello", Snackbar.LENGTH_SHORT);
+        snackbar.show();
+        */
+        Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
+        /*
         UserManager.getUserManager(getApplicationContext()).fakeSignIn();
         // TODO(yakov): Change to VerifyActivity.class, once that's implemented!
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -103,6 +111,7 @@ public class LoginActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
         startActivity(intent);
+        */
       }
     });
     

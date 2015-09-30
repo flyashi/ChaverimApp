@@ -21,8 +21,7 @@ import org.chaverim5t.chaverim.data.UserManager;
 public class MainActivity extends AppCompatActivity { /* auto-extends FragmentActivity */
 
   private static final String TAG = "MainActivity";
-  private UserManager userManager = UserManager.getUserManager(this);
-  private CallManager callManager = CallManager.getCallManager(this);
+  private UserManager userManager;
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity { /* auto-extends FragmentAc
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    userManager  = UserManager.getUserManager(this);
 
     // Create the adapter that will return a fragment for each of the three
     // primary sections of the activity.

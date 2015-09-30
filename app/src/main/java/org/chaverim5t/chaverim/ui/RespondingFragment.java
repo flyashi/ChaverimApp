@@ -29,7 +29,7 @@ public class RespondingFragment extends Fragment {
   private RecyclerView recyclerView;
   private TextView notRespondingTextView;
 
-  private CallManager callManager = CallManager.getCallManager(getContext());
+  private CallManager callManager;
 
   private RespondingViewAdapter respondingViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;
@@ -40,7 +40,7 @@ public class RespondingFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+    callManager = CallManager.getCallManager(getContext());
   }
 
   @Override

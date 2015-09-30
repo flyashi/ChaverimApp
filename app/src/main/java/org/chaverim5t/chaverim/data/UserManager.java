@@ -1,8 +1,11 @@
 package org.chaverim5t.chaverim.data;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import org.chaverim5t.chaverim.util.NetworkUtils;
+
+import java.util.HashMap;
 
 /**
  * Manages the logged in user. Currently only provides the userID, user name, whether or not the
@@ -13,6 +16,7 @@ public class UserManager {
   private static final String USER_MANAGER_PREFS_NAME = "MyPrefsFile";
 
   private static UserManager userManager;
+  private NetworkUtils networkUtils;
   private Context context;
 
   public static UserManager getUserManager(Context context) {
@@ -24,7 +28,7 @@ public class UserManager {
 
   public UserManager(Context context) {
     this.context = context;
-
+    this.networkUtils = NetworkUtils.getNetworkUtils(context);
     loadSharedPreferences();
   }
 
@@ -32,7 +36,7 @@ public class UserManager {
     SharedPreferences settings =
         context.getSharedPreferences(USER_MANAGER_PREFS_NAME, Context.MODE_PRIVATE);
     userID = settings.getString("userID", "");
-    userName = settings.getString("userName", "");
+    userFullName = settings.getString("userFullName", "");
     signedIn = (userID.length() > 0);
   }
 
@@ -41,7 +45,7 @@ public class UserManager {
         context.getSharedPreferences(USER_MANAGER_PREFS_NAME, Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = settings.edit();
     editor.putString("userID", userID);
-    editor.putString("userName", userName);
+    editor.putString("userFullName", userFullName);
 
     // Commit the edits!
     editor.commit();
@@ -49,7 +53,7 @@ public class UserManager {
   }
   private boolean signedIn;
   private String userID;
-  private String userName;
+  private String userFullName;
 
   // TODO(yakov): Remove!
   private String oldDispatchSystemID;  // Dispatch 21 is "98"
@@ -57,7 +61,7 @@ public class UserManager {
   public void fakeSignIn() {
     signedIn = true;
     userID = "T21";
-    userName = "Shlomo Markowitz";
+    userFullName = "Shlomo Markowitz";
     oldDispatchSystemID = "98";
     saveSharedPreferences();
   }
@@ -65,7 +69,7 @@ public class UserManager {
   public void signOut() {
     signedIn = false;
     userID = "";
-    userName = "";
+    userFullName = "";
     saveSharedPreferences();
   }
   public boolean isSignedIn() {
@@ -84,11 +88,18 @@ public class UserManager {
     return userID;
   }
 
-  public String userName() {
-    return userName;
+  public String userFullName() {
+    return userFullName;
   }
 
   public String oldDispatchSystemID() {
     return oldDispatchSystemID;
+  }
+
+  public void attemptSignIn(String userID, String password) {
+    HashMap<String, String> params = new HashMap<>();
+    params.put("user_id", userID);
+    params.put("password", password);
+    //networkUtils.makeRequest("/api/getauthtoken", )
   }
 }
