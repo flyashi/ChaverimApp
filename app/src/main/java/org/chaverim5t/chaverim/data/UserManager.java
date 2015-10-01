@@ -3,6 +3,9 @@ package org.chaverim5t.chaverim.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+
 import org.chaverim5t.chaverim.util.NetworkUtils;
 
 import java.util.HashMap;
@@ -72,6 +75,7 @@ public class UserManager {
     userFullName = "";
     saveSharedPreferences();
   }
+
   public boolean isSignedIn() {
     return signedIn;
   }
@@ -96,10 +100,13 @@ public class UserManager {
     return oldDispatchSystemID;
   }
 
-  public void attemptSignIn(String userID, String password) {
-    HashMap<String, String> params = new HashMap<>();
-    params.put("user_id", userID);
-    params.put("password", password);
-    //networkUtils.makeRequest("/api/getauthtoken", )
+  public Request attemptSignIn(String userID, String password, Response.Listener listener,
+                            Response.ErrorListener errorListener) {
+    Object[][] params = {{"unit_number", userID}, {"password", password}};
+    return networkUtils.makeApiRequest("getauthtoken", params, listener, errorListener);
+  }
+
+  public Request attemptSignIn(String userID, String password) {
+    return attemptSignIn(userID, password, null, null);
   }
 }

@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,6 +25,8 @@ public class NetworkUtils {
   private static NetworkUtils networkUtils;
   private RequestQueue requestQueue;
   private Context context;
+
+  private static final String BASE_URL = "http://10.0.2.2:8080/";  // host PC from emulator
 
   private NetworkUtils(Context context) {
     this.context = context.getApplicationContext();
@@ -41,7 +44,22 @@ public class NetworkUtils {
     requestQueue.add(request);
   }
 
-  public Request makeRequest(String url, Map<String, String> params,
+  public Request makeApiRequest(String apiName, Object[][] params,
+                                final Response.Listener<JSONObject> userListener,
+                                final Response.ErrorListener userErrorListener) {
+    HashMap<String, Object> paramsMap = new HashMap<>();
+    for (Object[] keyValueArray : params) {
+      paramsMap.put(keyValueArray[0].toString(), keyValueArray[1]);
+    }
+    return makeApiRequest(apiName, paramsMap, userListener, userErrorListener);
+  }
+  public Request makeApiRequest(String apiName, Map<String, Object> params,
+                                final Response.Listener<JSONObject> userListener,
+                                final Response.ErrorListener userErrorListener) {
+    return makeRequest(BASE_URL + "api/" + apiName, params, userListener, userErrorListener);
+  }
+
+  public Request makeRequest(String url, Map<String, Object> params,
                              final Response.Listener<JSONObject> userListener,
                              final Response.ErrorListener userErrorListener) {
     Response.Listener<JSONObject> requestListener = new Response.Listener<JSONObject>() {
@@ -58,7 +76,7 @@ public class NetworkUtils {
       public void onErrorResponse(VolleyError error) {
         Log.e(TAG, "Got error response", error);
         if (error.networkResponse != null) {
-          Snackbar snackbar = Snackbar.make(null, "Hello", Snackbar.LENGTH_SHORT);
+          Snackbar.make(null, "Hello", Snackbar.LENGTH_SHORT).show();
           Log.e(TAG, "HTTP return code: " + Integer.toString(error.networkResponse.statusCode));
           for (String headerName : error.networkResponse.headers.keySet()) {
             Log.e(TAG, "HTTP return header: '" + headerName + "' = '" + error.networkResponse.headers.get(headerName) + "'");
@@ -69,23 +87,10 @@ public class NetworkUtils {
         }
       }
     };
-    JsonObjectRequestWithParams jsonObjectRequestWithParams = new
-        JsonObjectRequestWithParams(Request.Method.POST, url, requestListener, requestErrorListener,
-        params);
-    return jsonObjectRequestWithParams;
-  }
-
-  class JsonObjectRequestWithParams extends JsonObjectRequest {
-    private Map<String, String> params;
-
-    public JsonObjectRequestWithParams(int method, String url, Response.Listener listener, Response.ErrorListener errorListener, Map<String, String> params) {
-      super(method, url, listener, errorListener);
-      this.params = params;
-    }
-
-    @Override
-    protected Map<String, String> getParams() throws AuthFailureError {
-      return params;
-    }
+    Request request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params),
+        requestListener, requestErrorListener);
+    networkUtils.addRequest(request);
+    return request;
+    //return jsonObjectRequestWithParams;
   }
 }

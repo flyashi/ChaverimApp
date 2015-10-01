@@ -28,6 +28,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
 
@@ -54,6 +56,7 @@ public class LoginActivity extends Activity {
    * Keep track of the login task to ensure we can cancel it if requested.
    */
   private UserLoginTask mAuthTask = null;
+  private Request loginRequest = null;
 
   // UI references.
   private AutoCompleteTextView mEmailView;
@@ -149,14 +152,16 @@ public class LoginActivity extends Activity {
 
     // just do the fake login
     // TODO(yakov): Do the real login!
+    /* this works for fake signin
     UserManager.getUserManager(this).fakeSignIn();
     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
     // prevent back
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     finish();
     startActivity(intent);
+    */
 
-    if (mAuthTask != null) {
+    if (loginRequest != null) {
       return;
     }
 
@@ -197,19 +202,33 @@ public class LoginActivity extends Activity {
       // Show a progress spinner, and kick off a background task to
       // perform the user login attempt.
       showProgress(true);
-      mAuthTask = new UserLoginTask(email, password);
-      mAuthTask.execute((Void) null);
+      //mAuthTask = new UserLoginTask(email, password);
+      //mAuthTask.execute((Void) null);
+
+      /*
+            mAuthTask = null;
+      showProgress(false);
+
+      if (success) {
+        finish();
+      } else {
+        mPasswordView.setError(getString(R.string.error_incorrect_password));
+        mPasswordView.requestFocus();
+      }
+       */
+
+      UserManager.getUserManager(this).attemptSignIn(email, password);
     }
   }
 
   private boolean isEmailValid(String email) {
     //TODO: Replace this with your own logic
-    return email.contains("@");
+    return true; //email.contains("@");
   }
 
   private boolean isPasswordValid(String password) {
     //TODO: Replace this with your own logic
-    return password.length() > 4;
+    return true; //password.length() > 4;
   }
 
   /**

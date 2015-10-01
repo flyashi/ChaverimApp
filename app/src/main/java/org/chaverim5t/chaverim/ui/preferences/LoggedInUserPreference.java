@@ -18,10 +18,12 @@ import org.chaverim5t.chaverim.ui.BeginActivity;
 public class LoggedInUserPreference extends Preference {
   UserManager userManager = UserManager.getUserManager(getContext());
 
+  @SuppressWarnings("unused")
   public LoggedInUserPreference(Context context) {
     super(context);
   }
 
+  @SuppressWarnings("unused")
   public LoggedInUserPreference(Context context, AttributeSet attributeSet) {
     super(context, attributeSet);
   }
