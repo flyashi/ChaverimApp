@@ -2,11 +2,15 @@ package org.chaverim5t.chaverim.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 
 import org.chaverim5t.chaverim.util.NetworkUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -17,6 +21,7 @@ import java.util.HashMap;
  */
 public class UserManager {
   private static final String USER_MANAGER_PREFS_NAME = "MyPrefsFile";
+  private static final String TAG = UserManager.class.getSimpleName();
 
   private static UserManager userManager;
   private NetworkUtils networkUtils;
@@ -40,7 +45,8 @@ public class UserManager {
         context.getSharedPreferences(USER_MANAGER_PREFS_NAME, Context.MODE_PRIVATE);
     userID = settings.getString("userID", "");
     userFullName = settings.getString("userFullName", "");
-    signedIn = (userID.length() > 0);
+    authToken = settings.getString("authToken", "");
+    signedIn = (authToken.length() > 0);
   }
 
   private void saveSharedPreferences() {
@@ -49,6 +55,7 @@ public class UserManager {
     SharedPreferences.Editor editor = settings.edit();
     editor.putString("userID", userID);
     editor.putString("userFullName", userFullName);
+    editor.putString("authToken", authToken);
 
     // Commit the edits!
     editor.commit();
@@ -57,6 +64,11 @@ public class UserManager {
   private boolean signedIn;
   private String userID;
   private String userFullName;
+  private String authToken;
+  private boolean userIsDispatcher = false;
+  private boolean userIsResponder = false;
+  private boolean userIsAdmin = false;
+
 
   // TODO(yakov): Remove!
   private String oldDispatchSystemID;  // Dispatch 21 is "98"
@@ -66,6 +78,9 @@ public class UserManager {
     userID = "T21";
     userFullName = "Shlomo Markowitz";
     oldDispatchSystemID = "98";
+    userIsDispatcher = true;
+    userIsResponder = true;
+    userIsAdmin = true;
     saveSharedPreferences();
   }
 
@@ -81,11 +96,15 @@ public class UserManager {
   }
 
   public boolean isDispatcher() {
-    return true;
+    return userIsDispatcher;
   }
 
   public boolean isResponder() {
-    return true;
+    return userIsResponder;
+  }
+
+  public boolean isAdmin() {
+    return userIsAdmin;
   }
 
   public String userID() {
@@ -100,13 +119,58 @@ public class UserManager {
     return oldDispatchSystemID;
   }
 
-  public Request attemptSignIn(String userID, String password, Response.Listener listener,
-                            Response.ErrorListener errorListener) {
-    Object[][] params = {{"unit_number", userID}, {"password", password}};
-    return networkUtils.makeApiRequest("getauthtoken", params, listener, errorListener);
+  public Request attemptSignIn(final String requestUserID, String password,
+      final Response.Listener<JSONObject> userListener,
+      final Response.ErrorListener userErrorListener) {
+    Object[][] params = {{"unit_number", requestUserID}, {"password", password}};
+    Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+      @Override
+      public void onResponse(JSONObject response) {
+        try {
+          if (response.has("error") || !TextUtils.isEmpty(response.getString("error"))) {
+            if (userListener != null) {
+              userListener.onResponse(response);
+            }
+          }
+          if (response.has("auth_token")) {
+            authToken = response.getString("auth_token");
+          } else {
+            Log.w(TAG, "Expected auth_token but got none :(");
+          }
+          if (response.has("user")) {
+            JSONObject userObject = response.getJSONObject("user");
+            if (userObject.has("unit_number")) {
+              userID = userObject.getString("unit_number");
+            }
+            if (userObject.has("name")) {
+              userFullName = userObject.getString("name");
+            }
+            if (userObject.has("is_responder")) {
+              userIsResponder = userObject.getBoolean("is_responder");
+            }
+            if (userObject.has("is_dispatcher")) {
+              userIsDispatcher = userObject.getBoolean("is_dispatcher");
+            }
+            if (userObject.has("is_admin")) {
+              userIsAdmin = userObject.getBoolean("is_admin");
+            }
+          }
+        } catch (JSONException e) {
+          Log.e(TAG, "attemptSignIn's listener got error", e);
+        }
+        if (userListener != null) {
+          userListener.onResponse(response);
+        }
+      }
+    };
+    return networkUtils.makeApiRequest("getauthtoken", params, listener, userErrorListener);
   }
 
-  public Request attemptSignIn(String userID, String password) {
-    return attemptSignIn(userID, password, null, null);
+  public Request attemptSignIn(String requestUserID, String password) {
+    return attemptSignIn(requestUserID, password, null, null);
+  }
+
+  public String authToken() {
+    return authToken;
   }
 }

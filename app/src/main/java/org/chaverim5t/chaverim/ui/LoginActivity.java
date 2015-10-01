@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,9 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +57,7 @@ public class LoginActivity extends Activity {
   private static final String[] DUMMY_CREDENTIALS = new String[]{
       "foo@example.com:hello", "bar@example.com:world"
   };
+  private static final String TAG = LoginActivity.class.getSimpleName();
   /**
    * Keep track of the login task to ensure we can cancel it if requested.
    */
@@ -216,8 +222,43 @@ public class LoginActivity extends Activity {
         mPasswordView.requestFocus();
       }
        */
-
-      UserManager.getUserManager(this).attemptSignIn(email, password);
+      final Response.ErrorListener errorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+          loginRequest = null;
+          showProgress(false);
+          Snackbar.make(mLoginFormView, "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+          mPasswordView.setError(error.getLocalizedMessage() /*getString(R.string.error_incorrect_password)*/);
+          mPasswordView.requestFocus();
+        }
+      };
+      Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+          loginRequest = null;
+          showProgress(false);
+          try {
+            if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
+              errorListener.onErrorResponse(new VolleyError(response.getString("error")));
+              return;
+            }
+            if (!response.has("auth_token")) {
+              errorListener.onErrorResponse(new VolleyError("No auth token"));
+              return;
+            }
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            // prevent back
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            startActivity(intent);
+          } catch (JSONException e) {
+            Log.e(TAG, "Error getting JSON in response", e);
+            errorListener.onErrorResponse(new VolleyError(e));
+          }
+        }
+      };
+      loginRequest =
+          UserManager.getUserManager(this).attemptSignIn(email, password, listener, errorListener);
     }
   }
 
