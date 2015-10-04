@@ -4,10 +4,13 @@ package org.chaverim5t.chaverim.ui;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +19,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.Call;
 import org.chaverim5t.chaverim.data.CallManager;
 import org.chaverim5t.chaverim.data.UserManager;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -42,6 +51,7 @@ public class CallsFragment extends Fragment {
   private CallsViewAdapter callsViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;
 
+  private Request<JSONObject> request;
   public CallsFragment() {
     // Required empty public constructor
   }
@@ -63,12 +73,45 @@ public class CallsFragment extends Fragment {
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
       public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            swipeRefreshLayout.setRefreshing(false);
+        if (userManager.isFakeData()) {
+          new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+              swipeRefreshLayout.setRefreshing(false);
+            }
+          }, 1000);
+        } else {
+          if (request != null) {
+            return;
           }
-        }, 1000);
+          final Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+              swipeRefreshLayout.setRefreshing(false);
+              request = null;
+              Snackbar.make(getView(), "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+          };
+          Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+              request = null;
+              swipeRefreshLayout.setRefreshing(false);
+              try {
+                if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
+                  Log.e(TAG, "Got error in response: " + response.getString("error"));
+                  errorListener.onErrorResponse(new VolleyError(response.getString("error")));
+                }
+                updateView();
+                callsViewAdapter.notifyDataSetChanged();
+              } catch (JSONException e) {
+                Log.e(TAG, "Error getting JSON in response", e);
+                errorListener.onErrorResponse(new VolleyError(e));
+              }
+            }
+          };
+          request = callManager.updateCalls(listener, errorListener);
+        }
       }
     });
 
@@ -159,7 +202,7 @@ public class CallsFragment extends Fragment {
       holder.callNumberText.setText(Integer.toString(call.callNumber));
       if (userManager.isDispatcher()) {
         holder.callerNameNumberView.setVisibility(View.VISIBLE);
-        holder.callerNameNumberText.setText(call.callerName + " - " + call.callerNumber);
+        holder.callerNameNumberText.setText(call.callerName + " - " + call.phoneNumber);
       } else {
         holder.callerNameNumberView.setVisibility(View.GONE);
       }

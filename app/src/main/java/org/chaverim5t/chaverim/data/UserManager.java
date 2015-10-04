@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import org.chaverim5t.chaverim.util.NetworkUtils;
 import org.json.JSONException;
@@ -26,6 +27,8 @@ public class UserManager {
   private static UserManager userManager;
   private NetworkUtils networkUtils;
   private Context context;
+
+  private Boolean fakeData = true;
 
   public static UserManager getUserManager(Context context) {
     if (userManager == null) {
@@ -47,6 +50,11 @@ public class UserManager {
     userFullName = settings.getString("userFullName", "");
     authToken = settings.getString("authToken", "");
     signedIn = (authToken.length() > 0);
+    fakeData = settings.getBoolean("fakeData", true);
+    userIsAdmin = settings.getBoolean("isDispatcher", false);
+    userIsDispatcher = settings.getBoolean("isDispatcher", false);
+    userIsResponder = settings.getBoolean("isResponder", false);
+
   }
 
   private void saveSharedPreferences() {
@@ -56,7 +64,7 @@ public class UserManager {
     editor.putString("userID", userID);
     editor.putString("userFullName", userFullName);
     editor.putString("authToken", authToken);
-
+    editor.putBoolean("fakeData", fakeData);
     // Commit the edits!
     editor.commit();
 
@@ -81,6 +89,7 @@ public class UserManager {
     userIsDispatcher = true;
     userIsResponder = true;
     userIsAdmin = true;
+    fakeData = true;
     saveSharedPreferences();
   }
 
@@ -127,10 +136,11 @@ public class UserManager {
       @Override
       public void onResponse(JSONObject response) {
         try {
-          if (response.has("error") || !TextUtils.isEmpty(response.getString("error"))) {
-            if (userListener != null) {
-              userListener.onResponse(response);
+          if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
+            if (userErrorListener != null) {
+              userErrorListener.onErrorResponse(new VolleyError(response.getString("error")));
             }
+            return;
           }
           if (response.has("auth_token")) {
             authToken = response.getString("auth_token");
@@ -139,6 +149,7 @@ public class UserManager {
           }
           if (response.has("user")) {
             JSONObject userObject = response.getJSONObject("user");
+            Log.d(TAG, "Parsing user: " + userObject.toString(2));
             if (userObject.has("unit_number")) {
               userID = userObject.getString("unit_number");
             }
@@ -154,6 +165,11 @@ public class UserManager {
             if (userObject.has("is_admin")) {
               userIsAdmin = userObject.getBoolean("is_admin");
             }
+            if (!userIsResponder && !userIsDispatcher) {
+              Log.w(TAG, "WARNING: not responder or dispatcher! App will crash!");
+            }
+          } else {
+            Log.w(TAG, "GOT NO USER!");
           }
         } catch (JSONException e) {
           Log.e(TAG, "attemptSignIn's listener got error", e);
@@ -161,6 +177,7 @@ public class UserManager {
         if (userListener != null) {
           userListener.onResponse(response);
         }
+        fakeData = false;
       }
     };
     return networkUtils.makeApiRequest("getauthtoken", params, listener, userErrorListener);
@@ -172,5 +189,9 @@ public class UserManager {
 
   public String authToken() {
     return authToken;
+  }
+
+  public Boolean isFakeData() {
+    return fakeData;
   }
 }

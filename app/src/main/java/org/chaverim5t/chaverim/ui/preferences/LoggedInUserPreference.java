@@ -16,16 +16,18 @@ import org.chaverim5t.chaverim.ui.BeginActivity;
  * Preference that displays the currently logged in user, and allows the user to sign out.
  */
 public class LoggedInUserPreference extends Preference {
-  UserManager userManager = UserManager.getUserManager(getContext());
+  UserManager userManager;
 
   @SuppressWarnings("unused")
   public LoggedInUserPreference(Context context) {
     super(context);
+    userManager = UserManager.getUserManager(getContext());
   }
 
   @SuppressWarnings("unused")
   public LoggedInUserPreference(Context context, AttributeSet attributeSet) {
     super(context, attributeSet);
+    userManager = UserManager.getUserManager(getContext());
   }
 
   @Override

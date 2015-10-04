@@ -1,6 +1,8 @@
 package org.chaverim5t.chaverim.data;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -8,6 +10,9 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
 import org.chaverim5t.chaverim.util.NetworkUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +25,7 @@ import java.util.Map;
  * Stores, updates, retrieves, and provides {@link Call} objects. Currently uses only fake data.
  */
 public class CallManager {
+  private static final String TAG = CallManager.class.getSimpleName();
   private static CallManager callManager;
   private UserManager userManager;
   private SettingsManager settingsManager;
@@ -41,7 +47,7 @@ public class CallManager {
     Call call = new Call("Boost in Bayswater");
     call.coverage = Arrays.asList("T21", "W36");
     call.callerName = "FRANK";
-    call.callerNumber = "7185556789";
+    call.phoneNumber = "7185556789";
     call.callId = 1723;
     call.callNumber = 7;
     call.createdTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 23)).getTimeInMillis();
@@ -50,7 +56,7 @@ public class CallManager {
     call.notes = "For a member";
     call.vehicle = "Black Town & Country";
     call.problem = "Boost";
-    call.region = "Bayswater";
+    call.area = "B";  // Bayswater
     call.status = "Covered";
     call.urgent = false;
     call.location = "BAY 24 & MOTT";
@@ -117,6 +123,69 @@ public class CallManager {
     }
   }
 
+  public Request updateCalls(final Response.Listener<JSONObject> userListener,
+      final Response.ErrorListener userErrorListener) {
+    Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+      @Override
+      public void onResponse(JSONObject response) {
+        try {
+          if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
+            if (userListener != null) {
+              userListener.onResponse(response);
+            }
+            return;
+          }
+          if (!response.has("calls")) {
+            Log.w(TAG, "Expected calls[] but got none :(");
+            return;
+          }
+          JSONArray calls = response.getJSONArray("calls");
+          for (int callNum = 0; callNum < calls.length(); callNum++) {
+            JSONObject callObj = calls.getJSONObject(callNum);
+            Call call = new Call();
+            call.status = optionalString(callObj, "call_status");
+            call.callerName = optionalString(callObj, "caller_name");
+            //call.createdTimestamp = // We get it in "2015-10-04 20:55:24.942102" :-/
+            call.area = optionalString(callObj, "call_area");
+            call.phoneNumber = optionalString(callObj, "phone_number");
+            call.urgent = callObj.has("is_urgent") && callObj.getBoolean("is_urgent");
+            //call.updatedTimestamp = // again, need to agree on a time format
+            call.notes = optionalString(callObj, "notes");
+            call.callId = callObj.has("id") ? callObj.getLong("id") : -1;
+            call.vehicle = optionalString(callObj, "vehicle_description");
+            call.location = optionalString(callObj, "location");
+            call.callNumber = (callObj.has("call_number") && !callObj.isNull("call_number")) ? callObj.getInt("call_number") : -1;
+            /*
+            JSONObject userObject = response.getJSONObject("user");
+            if (userObject.has("unit_number")) {
+              userID = userObject.getString("unit_number");
+            }
+            if (userObject.has("name")) {
+              userFullName = userObject.getString("name");
+            }
+            if (userObject.has("is_responder")) {
+              userIsResponder = userObject.getBoolean("is_responder");
+            }
+            if (userObject.has("is_dispatcher")) {
+              userIsDispatcher = userObject.getBoolean("is_dispatcher");
+            }
+            if (userObject.has("is_admin")) {
+              userIsAdmin = userObject.getBoolean("is_admin");
+            }
+            */
+          }
+        } catch (JSONException e) {
+          Log.e(TAG, "updateCalls's listener got error", e);
+        }
+        if (userListener != null) {
+          userListener.onResponse(response);
+        }
+      }
+    };
+    Object[][] arr = {{"auth_token", userManager.authToken()}};
+    return networkUtils.makeApiRequest("getcalls", arr, listener, userErrorListener);
+  }
+
   public void createAndDispatch(String callerName, String callerNumber, String location,
                                 String problem, String area, String note, String vehicle) {
     if (settingsManager.dispatchOnNewSystem()) {
@@ -178,5 +247,13 @@ public class CallManager {
     protected Map<String, String> getParams() throws AuthFailureError {
       return params;
     }
+  }
+
+  private String optionalString(JSONObject obj, String key) throws JSONException {
+    return obj.has(key) ? obj.getString(key) : "";
+  }
+
+  private String optionalString(JSONObject obj, String key, String defaultValue) throws JSONException {
+    return obj.has(key) ? obj.getString(key) : defaultValue;
   }
 }

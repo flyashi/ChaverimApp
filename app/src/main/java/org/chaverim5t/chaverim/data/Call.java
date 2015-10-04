@@ -19,11 +19,11 @@ public class Call {
   public long updatedTimestamp;
   public String disptacherName;
   public String callerName;
-  public String callerNumber;
+  public String phoneNumber;
   public String notes;
   public String vehicle;
   public String problem;
-  public String region;
+  public String area;
   public String status;
   public boolean urgent;
   public String location;
@@ -50,7 +50,7 @@ public class Call {
     title = "";
     callNumber = 0;
     callerName = "";
-    callerNumber = "";
+    phoneNumber = "";
     callId = 0;
     createdTimestamp = 1234567890123l;
     updatedTimestamp = 1234567890124l;
@@ -59,7 +59,7 @@ public class Call {
     vehicle = "";
     location = "";
     problem = "";
-    region = "F";
+    area = "F";
     status = "Open";
     urgent = false;
     voiceNotes = new ArrayList<>();

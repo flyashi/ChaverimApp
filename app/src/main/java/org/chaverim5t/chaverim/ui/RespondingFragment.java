@@ -147,7 +147,7 @@ public class RespondingFragment extends Fragment {
       Call call = callManager.myRespondingCalls().get(position);
       holder.title.setText(call.title);
       holder.callNumber.setText(Integer.toString(call.callNumber));
-      holder.callerName.setText(call.callerName + " - " + call.callerNumber);
+      holder.callerName.setText(call.callerName + " - " + call.phoneNumber);
       holder.locationTextView.setText(call.location);
       holder.vehicleTextView.setText(call.vehicle);
 
