@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Chaverim</string>
 
-    <string name="begin_screen_text">This app is for dispatchers and responders for Chaverim of the Five Towns and Far Rockaway.\n\nIf you need assistance, please dial 718-337-1800.\n\nIf you would like to volunteer, please email info@chaverim5t.org\n\nIf you are already a volunteer, click Begin below.</string>
+    <string name="begin_screen_text">This app is for dispatchers and responders for Chaverim of the Five Towns and Far Rockaway.\n\nIf you need assistance, please dial <a href="tel:+17183371800">718-337-1800</a>.\n\nIf you would like to volunteer, please email <a href="mailto:info@chaverim5t.org">info@chaverim5t.org</a>\n\nIf you are already a volunteer, click Begin below.</string>
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>

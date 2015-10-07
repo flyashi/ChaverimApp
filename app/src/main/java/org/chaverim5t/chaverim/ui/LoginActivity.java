@@ -4,10 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build.VERSION;
@@ -61,11 +59,10 @@ public class LoginActivity extends Activity {
   /**
    * Keep track of the login task to ensure we can cancel it if requested.
    */
-  private UserLoginTask mAuthTask = null;
   private Request loginRequest = null;
 
   // UI references.
-  private AutoCompleteTextView mEmailView;
+  private AutoCompleteTextView mUsernameView;
   private EditText mPasswordView;
   private View mProgressView;
   private View mLoginFormView;
@@ -80,7 +77,7 @@ public class LoginActivity extends Activity {
     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     // Set up the login form.
-    mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+    mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
     populateAutoComplete();
 
     mPasswordView = (EditText) findViewById(R.id.password);
@@ -129,10 +126,7 @@ public class LoginActivity extends Activity {
   }
 
   private void populateAutoComplete() {
-    if (VERSION.SDK_INT >= 14) {
-      // Use ContactsContract.Profile (API 14+)
-      //getLoaderManager().initLoader(0, null, this);
-    } else if (VERSION.SDK_INT >= 8) {
+    if (VERSION.SDK_INT >= 8) {
       // Use AccountManager (API 8+)
       new SetupEmailAutoCompleteTask().execute(null, null);
     }
@@ -172,11 +166,11 @@ public class LoginActivity extends Activity {
     }
 
     // Reset errors.
-    mEmailView.setError(null);
+    mUsernameView.setError(null);
     mPasswordView.setError(null);
 
     // Store values at the time of the login attempt.
-    String email = mEmailView.getText().toString();
+    String email = mUsernameView.getText().toString();
     String password = mPasswordView.getText().toString();
 
     boolean cancel = false;
@@ -191,12 +185,12 @@ public class LoginActivity extends Activity {
 
     // Check for a valid email address.
     if (TextUtils.isEmpty(email)) {
-      mEmailView.setError(getString(R.string.error_field_required));
-      focusView = mEmailView;
+      mUsernameView.setError(getString(R.string.error_field_required));
+      focusView = mUsernameView;
       cancel = true;
     } else if (!isEmailValid(email)) {
-      mEmailView.setError(getString(R.string.error_invalid_email));
-      focusView = mEmailView;
+      mUsernameView.setError(getString(R.string.error_invalid_email));
+      focusView = mUsernameView;
       cancel = true;
     }
 
@@ -344,64 +338,8 @@ public class LoginActivity extends Activity {
         new ArrayAdapter<String>(LoginActivity.this,
             android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-    mEmailView.setAdapter(adapter);
+    mUsernameView.setAdapter(adapter);
   }
 
-  /**
-   * Represents an asynchronous login/registration task used to authenticate
-   * the user.
-   */
-  public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-    private final String mEmail;
-    private final String mPassword;
-
-    UserLoginTask(String email, String password) {
-      mEmail = email;
-      mPassword = password;
-    }
-
-    @Override
-    protected Boolean doInBackground(Void... params) {
-      // TODO: attempt authentication against a network service.
-
-      try {
-        // Simulate network access.
-        Thread.sleep(2000);
-      } catch (InterruptedException e) {
-        return false;
-      }
-
-      for (String credential : DUMMY_CREDENTIALS) {
-        String[] pieces = credential.split(":");
-        if (pieces[0].equals(mEmail)) {
-          // Account exists, return true if the password matches.
-          return pieces[1].equals(mPassword);
-        }
-      }
-
-      // TODO: register the new account here.
-      return true;
-    }
-
-    @Override
-    protected void onPostExecute(final Boolean success) {
-      mAuthTask = null;
-      showProgress(false);
-
-      if (success) {
-        finish();
-      } else {
-        mPasswordView.setError(getString(R.string.error_incorrect_password));
-        mPasswordView.requestFocus();
-      }
-    }
-
-    @Override
-    protected void onCancelled() {
-      mAuthTask = null;
-      showProgress(false);
-    }
-  }
 }
 

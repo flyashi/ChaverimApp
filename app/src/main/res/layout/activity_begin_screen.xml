@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:layout_weight="1"
-            android:textColor="@color/chaverim_background_dark_text_color"/>
+            android:textColor="@color/chaverim_background_dark_text_color"
+            android:autoLink="all"/>
 
         <Button
             android:layout_width="fill_parent"
