@@ -6,12 +6,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
-    <string name="hello_world">Hello world!</string>
-
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_verify_sms">Verify SMS</string>
+
+    <!-- Verify SMS Activity -->
+    <string name="description_enter_sms_code">We sent an SMS to your phone with a verification code. When you receive that code, enter it here.</string>
+    <string name="sms_code_hint">e.g. 1234</string>
+    <string name="verify_button_label">Verify</string>
 </resources>

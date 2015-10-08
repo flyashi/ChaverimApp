@@ -33,12 +33,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.BeginActivity" />
         </activity>
-        <!-- -->
+        <!--  -->
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
-
+        <activity
+            android:name=".ui.VerifySMSActivity"
+            android:label="@string/title_activity_verify_sms"
+            android:parentActivityName=".ui.LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.chaverim5t.chaverim.ui.LoginActivity" />
+        </activity>
     </application>
 
 </manifest>

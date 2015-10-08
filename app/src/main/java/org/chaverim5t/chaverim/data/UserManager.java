@@ -132,6 +132,19 @@ public class UserManager {
       final Response.Listener<JSONObject> userListener,
       final Response.ErrorListener userErrorListener) {
     Object[][] params = {{"unit_number", requestUserID}, {"password", password}};
+    return attemptSignIn(params, userListener, userErrorListener);
+  }
+
+  public Request attemptPhoneNumberVerification(final String phoneNumber, final String verificationCode,
+                               final Response.Listener<JSONObject> userListener,
+                               final Response.ErrorListener userErrorListener) {
+    Object[][] params = {{"phone_number", phoneNumber}, {"code", verificationCode}};
+    return attemptSignIn(params, userListener, userErrorListener);
+  }
+
+  private final Request attemptSignIn(Object[][] params,
+                                      final Response.Listener<JSONObject> userListener,
+                                      final Response.ErrorListener userErrorListener) {
     Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
       @Override
       public void onResponse(JSONObject response) {
@@ -142,35 +155,7 @@ public class UserManager {
             }
             return;
           }
-          if (response.has("auth_token")) {
-            authToken = response.getString("auth_token");
-          } else {
-            Log.w(TAG, "Expected auth_token but got none :(");
-          }
-          if (response.has("user")) {
-            JSONObject userObject = response.getJSONObject("user");
-            Log.d(TAG, "Parsing user: " + userObject.toString(2));
-            if (userObject.has("unit_number")) {
-              userID = userObject.getString("unit_number");
-            }
-            if (userObject.has("name")) {
-              userFullName = userObject.getString("name");
-            }
-            if (userObject.has("is_responder")) {
-              userIsResponder = userObject.getBoolean("is_responder");
-            }
-            if (userObject.has("is_dispatcher")) {
-              userIsDispatcher = userObject.getBoolean("is_dispatcher");
-            }
-            if (userObject.has("is_admin")) {
-              userIsAdmin = userObject.getBoolean("is_admin");
-            }
-            if (!userIsResponder && !userIsDispatcher) {
-              Log.w(TAG, "WARNING: not responder or dispatcher! App will crash!");
-            }
-          } else {
-            Log.w(TAG, "GOT NO USER!");
-          }
+          processAuthTokenResponse(response);
         } catch (JSONException e) {
           Log.e(TAG, "attemptSignIn's listener got error", e);
         }
@@ -185,6 +170,38 @@ public class UserManager {
 
   public Request attemptSignIn(String requestUserID, String password) {
     return attemptSignIn(requestUserID, password, null, null);
+  }
+
+  private void processAuthTokenResponse(JSONObject response) throws JSONException {
+    if (response.has("auth_token")) {
+      authToken = response.getString("auth_token");
+    } else {
+      Log.w(TAG, "Expected auth_token but got none :(");
+    }
+    if (response.has("user")) {
+      JSONObject userObject = response.getJSONObject("user");
+      Log.d(TAG, "Parsing user: " + userObject.toString(2));
+      if (userObject.has("unit_number")) {
+        userID = userObject.getString("unit_number");
+      }
+      if (userObject.has("name")) {
+        userFullName = userObject.getString("name");
+      }
+      if (userObject.has("is_responder")) {
+        userIsResponder = userObject.getBoolean("is_responder");
+      }
+      if (userObject.has("is_dispatcher")) {
+        userIsDispatcher = userObject.getBoolean("is_dispatcher");
+      }
+      if (userObject.has("is_admin")) {
+        userIsAdmin = userObject.getBoolean("is_admin");
+      }
+      if (!userIsResponder && !userIsDispatcher) {
+        Log.w(TAG, "WARNING: not responder or dispatcher! App will crash!");
+      }
+    } else {
+      Log.w(TAG, "GOT NO USER!");
+    }
   }
 
   public String authToken() {

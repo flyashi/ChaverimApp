@@ -9,4 +9,5 @@
     <dimen name="tile_list_padding_horizontal">5dp</dimen>
     <dimen name="tile_card_elevation">5dp</dimen>
     <dimen name="tile_card_corner_radius">4dp</dimen>
+    <dimen name="spinner_size">200dp</dimen>
 </resources>

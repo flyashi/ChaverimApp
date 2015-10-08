@@ -9,10 +9,10 @@
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_phone_number">Invalid phone number</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="verify_button_text">Verify</string>
+    <string name="sms_button_text">Request Code</string>
     <string name="sms_login_description">To login using just your phone number, enter your phone number here. You will receive an SMS to verify this number.</string>
     <string name="password_login_description">You may also login using the same username and password you use for the dispatch system.</string>
-
 </resources>

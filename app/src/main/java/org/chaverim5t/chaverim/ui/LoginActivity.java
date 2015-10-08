@@ -25,7 +25,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -33,6 +32,8 @@ import com.android.volley.VolleyError;
 
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
+import org.chaverim5t.chaverim.util.NetworkUtils;
+import org.chaverim5t.chaverim.util.PhoneNumberFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,12 +57,11 @@ public class LoginActivity extends Activity {
       "foo@example.com:hello", "bar@example.com:world"
   };
   private static final String TAG = LoginActivity.class.getSimpleName();
-  /**
-   * Keep track of the login task to ensure we can cancel it if requested.
-   */
-  private Request loginRequest = null;
+  // Keep track of the login request to ensure we can cancel it if requested.
+  private Request loginOrSmsRequest = null;
 
   // UI references.
+  private EditText mPhoneNumberView;
   private AutoCompleteTextView mUsernameView;
   private EditText mPasswordView;
   private View mProgressView;
@@ -100,29 +100,18 @@ public class LoginActivity extends Activity {
       }
     });
 
-    final Button verifyButton = (Button) findViewById(R.id.verify_sms_button);
+    final Button verifyButton = (Button) findViewById(R.id.sms_button);
     verifyButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        /*
-        Snackbar snackbar = Snackbar.make(verifyButton, "Hello", Snackbar.LENGTH_SHORT);
-        snackbar.show();
-        */
-        Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
-        /*
-        UserManager.getUserManager(getApplicationContext()).fakeSignIn();
-        // TODO(yakov): Change to VerifyActivity.class, once that's implemented!
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        // prevent back
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        finish();
-        startActivity(intent);
-        */
+        attemptRequestSMS();
+
       }
     });
     
     mLoginFormView = findViewById(R.id.login_form);
     mProgressView = findViewById(R.id.login_progress);
+    mPhoneNumberView = (EditText) findViewById(R.id.phone_number_text);
   }
 
   private void populateAutoComplete() {
@@ -161,7 +150,7 @@ public class LoginActivity extends Activity {
     startActivity(intent);
     */
 
-    if (loginRequest != null) {
+    if (loginOrSmsRequest != null) {
       return;
     }
 
@@ -219,7 +208,7 @@ public class LoginActivity extends Activity {
       final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          loginRequest = null;
+          loginOrSmsRequest = null;
           showProgress(false);
           Snackbar.make(mLoginFormView, "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
           mPasswordView.setError(error.getLocalizedMessage() /*getString(R.string.error_incorrect_password)*/);
@@ -229,7 +218,7 @@ public class LoginActivity extends Activity {
       Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
-          loginRequest = null;
+          loginOrSmsRequest = null;
           showProgress(false);
           try {
             if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
@@ -251,11 +240,85 @@ public class LoginActivity extends Activity {
           }
         }
       };
-      loginRequest =
+      loginOrSmsRequest =
           UserManager.getUserManager(this).attemptSignIn(email, password, listener, errorListener);
     }
   }
 
+  private void attemptRequestSMS() {
+    /*
+        Snackbar snackbar = Snackbar.make(verifyButton, "Hello", Snackbar.LENGTH_SHORT);
+        snackbar.show();
+        */
+    //Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
+        /*
+        UserManager.getUserManager(getApplicationContext()).fakeSignIn();
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        // prevent back
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+        startActivity(intent);
+        */
+
+
+    if (loginOrSmsRequest != null) {
+      Log.d(TAG, "loginOrSmsRequest is not null. Quitting...");
+      return;
+    }
+
+    String phoneNumber = mPhoneNumberView.getText().toString();
+    if (!PhoneNumberFormatter.isValid(phoneNumber)) {
+      Log.d(TAG, "Not a valid phone number: " + phoneNumber + ". Quitting...");
+      mPhoneNumberView.setError(getString(R.string.error_invalid_phone_number));
+      mPhoneNumberView.requestFocus();
+      return;
+    }
+    mPhoneNumberView.setError(null);
+    showProgress(true);
+
+    String[][] params = {{"phone_number", phoneNumber}};
+    final Response.ErrorListener errorListener = new Response.ErrorListener() {
+      @Override
+      public void onErrorResponse(VolleyError error) {
+        loginOrSmsRequest = null;
+        showProgress(false);
+        Log.e(TAG, "SMSRequest Volley errorListener", error);
+        mPhoneNumberView.setError(error.getLocalizedMessage());
+        mPhoneNumberView.requestFocus();
+      }
+    };
+    Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+      @Override
+      public void onResponse(JSONObject response) {
+        loginOrSmsRequest = null;
+        try {
+          if (!response.has("error") || (response.has("error") && !TextUtils.isEmpty(response.getString("error")))) {
+            if (response.has("error")) {
+              errorListener.onErrorResponse(new VolleyError(response.getString("error")));
+            } else {
+              errorListener.onErrorResponse(new VolleyError("Empty Response"));
+            }
+          } else {
+            showProgress(false);
+
+            Intent intent = new Intent(getApplicationContext(), VerifySMSActivity.class);
+            intent.putExtra(VerifySMSActivity.PHONE_NUMBER_TAG, mPhoneNumberView.getText().toString());
+            // Allow the user to go back? Yes. Therefore, comment this out.
+            /*
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            */
+            startActivity(intent);
+          }
+        } catch (JSONException e) {
+          errorListener.onErrorResponse(new VolleyError(e));
+        }
+      }
+    };
+    loginOrSmsRequest = NetworkUtils.getNetworkUtils(getApplicationContext())
+        .makeApiRequest("smsrequest", params, listener, errorListener);
+  }
   private boolean isEmailValid(String email) {
     //TODO: Replace this with your own logic
     return true; //email.contains("@");
