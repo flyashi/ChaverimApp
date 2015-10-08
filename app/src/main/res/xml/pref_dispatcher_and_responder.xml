@@ -13,6 +13,7 @@
         <CheckBoxPreference
             android:key="receive_notifications"
             android:title="Receive Notifications"
+            android:summary="Receive notifications of call events which you may select below."
             android:defaultValue="true" />
 
         <CheckBoxPreference
@@ -33,7 +34,6 @@
         <CheckBoxPreference
             android:key="receive_notification_call_canceled"
             android:title="Call Canceled"
-            android:summary="Receive notifications of call events which you may select below."
             android:defaultValue="true" />
     </PreferenceCategory>
     <PreferenceCategory

@@ -140,6 +140,7 @@ public class CallManager {
             return;
           }
           JSONArray calls = response.getJSONArray("calls");
+          callsList.clear();
           for (int callNum = 0; callNum < calls.length(); callNum++) {
             JSONObject callObj = calls.getJSONObject(callNum);
             Call call = new Call();
@@ -173,7 +174,9 @@ public class CallManager {
               userIsAdmin = userObject.getBoolean("is_admin");
             }
             */
+            callsList.add(call);
           }
+          updateRespondingList();
         } catch (JSONException e) {
           Log.e(TAG, "updateCalls's listener got error", e);
         }
@@ -250,7 +253,7 @@ public class CallManager {
   }
 
   private String optionalString(JSONObject obj, String key) throws JSONException {
-    return obj.has(key) ? obj.getString(key) : "";
+    return optionalString(obj, key, "");
   }
 
   private String optionalString(JSONObject obj, String key, String defaultValue) throws JSONException {

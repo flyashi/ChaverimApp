@@ -30,7 +30,9 @@ public class NetworkUtils {
 
   private NetworkUtils(Context context) {
     this.context = context.getApplicationContext();
-    this.requestQueue = Volley.newRequestQueue(context);
+    if (context != null) {
+      this.requestQueue = Volley.newRequestQueue(context);
+    }
   }
 
   public static NetworkUtils getNetworkUtils(Context context) {

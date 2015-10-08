@@ -156,6 +156,7 @@ public class UserManager {
             return;
           }
           processAuthTokenResponse(response);
+          saveSharedPreferences();
         } catch (JSONException e) {
           Log.e(TAG, "attemptSignIn's listener got error", e);
         }

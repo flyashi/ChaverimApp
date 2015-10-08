@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <org.chaverim5t.chaverim.ui.preferences.LoggedInUserPreference
+        android:layout="@layout/preference_logged_in_user"
+        />
+    <org.chaverim5t.chaverim.ui.preferences.CallResponderHotlinePreference
+        android:layout="@layout/preference_call" />
+    <org.chaverim5t.chaverim.ui.preferences.CallDispatchHotlinePreference
+        android:layout="@layout/preference_call" />
     <PreferenceCategory
         android:title="Notification Settings"
         android:key="pref_key_storage_settings">
         <CheckBoxPreference
             android:key="receive_notifications"
             android:title="Receive Notifications"
+            android:summary="Receive notifications of call events which you may select below."
             android:defaultValue="true" />
 
         <CheckBoxPreference
@@ -26,7 +34,6 @@
         <CheckBoxPreference
             android:key="receive_notification_call_canceled"
             android:title="Call Canceled"
-            android:summary="Receive notifications of call events which you may select below."
             android:defaultValue="true" />
     </PreferenceCategory>
     <PreferenceCategory

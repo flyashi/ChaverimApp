@@ -103,7 +103,8 @@ public class CallsFragment extends Fragment {
                   errorListener.onErrorResponse(new VolleyError(response.getString("error")));
                 }
                 updateView();
-                callsViewAdapter.notifyDataSetChanged();
+                // doesn't work: callsViewAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(new CallsViewAdapter());
               } catch (JSONException e) {
                 Log.e(TAG, "Error getting JSON in response", e);
                 errorListener.onErrorResponse(new VolleyError(e));
