@@ -24,7 +24,7 @@
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".ui.BeginActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.BeginActivity" />
@@ -37,7 +37,8 @@
         <activity
             android:name=".ui.VerifySMSActivity"
             android:label="@string/title_activity_verify_sms"
-            android:parentActivityName=".ui.LoginActivity" >
+            android:parentActivityName=".ui.LoginActivity"
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.chaverim5t.chaverim.ui.LoginActivity" />
