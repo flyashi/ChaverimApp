@@ -12,11 +12,12 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/chaverim_logo_transparent"/>
+            android:src="@drawable/chaverim_logo_transparent"
+            android:contentDescription="@string/content_description_chaverim_logo"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chaverim"
+            android:text="@string/main_activity_title"
             style="?android:textAppearanceLarge"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>

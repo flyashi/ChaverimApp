@@ -27,9 +27,9 @@ import java.util.Map;
 public class CallManager {
   private static final String TAG = CallManager.class.getSimpleName();
   private static CallManager callManager;
-  private UserManager userManager;
-  private SettingsManager settingsManager;
-  private NetworkUtils networkUtils;
+  private final UserManager userManager;
+  private final SettingsManager settingsManager;
+  private final NetworkUtils networkUtils;
 
   public static CallManager getCallManager(Context context) {
     if (callManager == null) {
@@ -38,56 +38,59 @@ public class CallManager {
     return callManager;
   }
 
-  public CallManager(Context context) {
+  private CallManager(Context context) {
     settingsManager = SettingsManager.getSettingsManager(context);
     userManager = UserManager.getUserManager(context);
     networkUtils = NetworkUtils.getNetworkUtils(context);
 
     callsList = new ArrayList<>();
-    Call call = new Call("Boost in Bayswater");
-    call.coverage = Arrays.asList("T21", "W36");
-    call.callerName = "FRANK";
-    call.phoneNumber = "7185556789";
-    call.callId = 1723;
-    call.callNumber = 7;
-    call.createdTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 23)).getTimeInMillis();
-    call.updatedTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 45, 55)).getTimeInMillis();
-    call.disptacherName = "T21";
-    call.notes = "For a member";
-    call.vehicle = "Black Town & Country";
-    call.problem = "Boost";
-    call.area = "B";  // Bayswater
-    call.status = "Covered";
-    call.urgent = false;
-    call.location = "BAY 24 & MOTT";
-
-    VoiceNote voiceNote = new VoiceNote();
-    voiceNote.author = "C2";
-    voiceNote.duration = 12;
-    voiceNote.noteID = 12345;
-    call.voiceNotes = Arrays.asList(voiceNote);
-
-    Call.Message message = call.newMessage();
-    message.timestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 24)).getTimeInMillis();
-    message.message = "[6] B: BOOST For a member @ BAY 24 & MOTT Black Town & Country T21";
-    call.messages = Arrays.asList(message);
-
-    callsList.add(call);
-    callsList.add(new Call(1, "Flat in Far Rockaway"));
-    callsList.add(new Call(2, "Car L/O in Cedarhurst"));
-    callsList.add(new Call(3, "House L/O in Hewlett"));
-    callsList.add(new Call(4, "Minyan needed in Mineola"));
-    callsList.add(new Call(5, "Ignition problem in Inwood"));
-    callsList.add(new Call(6, "Out of Gas in Oceanside"));
-
-    callerIDList = new ArrayList<>();
-    callerIDList.add(new CallerID("(718) 555-7212"));
-    callerIDList.add(new CallerID("(516) 555-1324"));
-    callerIDList.add(new CallerID("(917) 555-5309"));
-    callerIDList.add(new CallerID("(347) 555-8264"));
-
     respondingCallsList = new ArrayList<>();
-    updateRespondingList();
+
+    if (userManager.isFakeData()) {
+
+      Call call = new Call("Boost in Bayswater");
+      call.coverage = Arrays.asList("T21", "W36");
+      call.callerName = "FRANK";
+      call.phoneNumber = "7185556789";
+      call.callId = 1723;
+      call.callNumber = 7;
+      call.createdTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 23)).getTimeInMillis();
+      call.updatedTimestamp = (new GregorianCalendar(2015, 12, 12, 8, 45, 55)).getTimeInMillis();
+      call.dispatcherName = "T21";
+      call.notes = "For a member";
+      call.vehicle = "Black Town & Country";
+      call.problem = "Boost";
+      call.area = "B";  // Bayswater
+      call.status = "Covered";
+      call.urgent = false;
+      call.location = "BAY 24 & MOTT";
+
+      VoiceNote voiceNote = new VoiceNote();
+      voiceNote.author = "C2";
+      voiceNote.duration = 12;
+      voiceNote.noteID = 12345;
+      call.voiceNotes = Arrays.asList(voiceNote);
+
+      Call.Message message = call.newMessage();
+      message.timestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 24)).getTimeInMillis();
+      message.message = "[6] B: BOOST For a member @ BAY 24 & MOTT Black Town & Country T21";
+      call.messages = Arrays.asList(message);
+
+      callsList.add(call);
+      callsList.add(new Call(1, "Flat in Far Rockaway"));
+      callsList.add(new Call(2, "Car L/O in Cedarhurst"));
+      callsList.add(new Call(3, "House L/O in Hewlett"));
+      callsList.add(new Call(4, "Minyan needed in Mineola"));
+      callsList.add(new Call(5, "Ignition problem in Inwood"));
+      callsList.add(new Call(6, "Out of Gas in Oceanside"));
+
+      callerIDList = new ArrayList<>();
+      callerIDList.add(new CallerID("(718) 555-7212"));
+      callerIDList.add(new CallerID("(516) 555-1324"));
+      callerIDList.add(new CallerID("(917) 555-5309"));
+      callerIDList.add(new CallerID("(347) 555-8264"));
+      updateRespondingList();
+    }
   }
 
   private ArrayList<Call> respondingCallsList;
@@ -114,8 +117,8 @@ public class CallManager {
     respondingCallsList.clear();
     for (Call call : callsList) {
       if (call.coverage != null) {
-        for (String coverageUnitID : call.coverage) {
-          if (coverageUnitID.equalsIgnoreCase(userManager.userID())) {
+        for (String coverageUnitNumber : call.coverage) {
+          if (coverageUnitNumber.equalsIgnoreCase(userManager.unitNumber())) {
             respondingCallsList.add(call);
           }
         }
@@ -159,7 +162,7 @@ public class CallManager {
             /*
             JSONObject userObject = response.getJSONObject("user");
             if (userObject.has("unit_number")) {
-              userID = userObject.getString("unit_number");
+              unitNumber = userObject.getString("unit_number");
             }
             if (userObject.has("name")) {
               userFullName = userObject.getString("name");
@@ -178,7 +181,7 @@ public class CallManager {
           }
           updateRespondingList();
         } catch (JSONException e) {
-          Log.e(TAG, "updateCalls's listener got error", e);
+          Log.e(TAG, "CallManager updateCalls listener got error", e);
         }
         if (userListener != null) {
           userListener.onResponse(response);
@@ -193,6 +196,7 @@ public class CallManager {
                                 String problem, String area, String note, String vehicle) {
     if (settingsManager.dispatchOnNewSystem()) {
       // TODO(yakov): Switch to new system!
+      Log.d(TAG, "New system is not available yet. Not dispatching.");
     } else {
       Map<String, String> params = makePostData(callerName, callerNumber, problem, location, area, vehicle, note);
       MyRequest myRequest = new MyRequest(Request.Method.POST, "URL", null, null, params);

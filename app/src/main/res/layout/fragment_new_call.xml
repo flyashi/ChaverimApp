@@ -55,15 +55,16 @@
             android:id="@+id/problem_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Problem"
+            android:hint="@string/hint_new_call_problem"
             android:maxLines="1"
             android:singleLine="true"
-            android:inputType="none"/>
+            android:inputType="none"
+            tools:ignore="HardcodedText"/>
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/caller_number_text"
-            android:hint="Number"
+            android:hint="@string/hint_new_call_phone_number"
             android:maxLines="1"
             android:singleLine="true"
             android:inputType="phone"/>
@@ -71,21 +72,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/caller_name_text"
-            android:hint="Name"
+            android:hint="@string/hint_new_call_caller_name"
             android:maxLines="1"
             android:singleLine="true"/>
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/caller_address"
-            android:hint="Address"
+            android:hint="@string/hint_new_call_address_or_location"
             android:inputType="textPostalAddress"
             android:maxLines="1"
             android:singleLine="true"/>
+        <!-- TODO(yakov): Lay this out more nicely! -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_call_area_label_height"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="HardcodedText">
             <TextView
                 android:id="@+id/new_call_area_b"
                 android:text="B"
@@ -124,7 +127,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_call_area_label_height"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="HardcodedText">
             <TextView
                 android:id="@+id/new_call_area_vs"
                 android:text="VS"
@@ -149,7 +153,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/new_call_call_area_label_height"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="HardcodedText">
             <TextView
                 android:id="@+id/new_call_area_fh"
                 android:text="FH"
@@ -174,7 +179,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Other Call Area"
+            android:hint="@string/hint_new_call_other_call_area"
             android:maxLines="1"
             android:singleLine="true"
             android:id="@+id/other_call_area_text"
@@ -183,21 +188,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/vehicle"
-            android:hint="Car color/make/model"
+            android:hint="@string/hint_new_call_vehicle_description"
             android:maxLines="1"
             android:singleLine="true"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Click to Add Note - Sent to Members"
-            android:textSize="18dp"
+            android:hint="@string/hint_new_call_note_for_members"
+            android:textSize="18sp"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:id="@+id/note"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CREATE AND DISPATCH"
+            android:text="@string/new_call_create_and_dispatch_button_label"
             android:id="@+id/create_and_dispatch_button"/>
     </LinearLayout>
 </ScrollView>

@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/c2_blurred"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/content_description_background"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -21,13 +22,15 @@
             android:layout_width="240dp"
             android:layout_height="240dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/chaverim_logo_transparent"/>
+            android:src="@drawable/chaverim_logo_transparent"
+            android:contentDescription="@string/content_description_background"/>
 
+        <!-- A height of 0dp and gravity of 1 auto-sizes. -->
         <TextView
             android:text="@string/begin_screen_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:textColor="@color/chaverim_background_dark_text_color"
             android:autoLink="all"/>
@@ -36,7 +39,8 @@
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="0dp"
-            android:text="BEGIN"
+            android:layout_gravity="bottom"
+            android:text="@string/begin_button_text"
             android:id="@+id/begin_button"
             android:textColor="@color/chaverim_background_dark_text_color"/>
     </LinearLayout>

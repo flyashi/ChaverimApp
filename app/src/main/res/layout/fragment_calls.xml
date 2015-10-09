@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="No open/recent calls. Pull to refresh."
+            android:text="@string/no_open_or_recent_dispatched_calls"
             android:id="@+id/no_calls_text_view"/>
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

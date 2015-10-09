@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.chaverim5t.chaverim.data.CallManager;
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
 
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity { /* auto-extends FragmentAc
    * may be best to switch to a
    * {@link android.support.v4.app.FragmentStatePagerAdapter}.
    */
-  SectionsPagerAdapter mSectionsPagerAdapter;
+  private SectionsPagerAdapter mSectionsPagerAdapter;
 
   /**
    * The {@link ViewPager} that will host the section contents.

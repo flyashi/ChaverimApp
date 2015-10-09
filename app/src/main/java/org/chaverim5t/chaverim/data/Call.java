@@ -1,7 +1,6 @@
 package org.chaverim5t.chaverim.data;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public class Call {
   public long callId;
   public long createdTimestamp;
   public long updatedTimestamp;
-  public String disptacherName;
+  public String dispatcherName;
   public String callerName;
   public String phoneNumber;
   public String notes;
@@ -54,7 +53,7 @@ public class Call {
     callId = 0;
     createdTimestamp = 1234567890123l;
     updatedTimestamp = 1234567890124l;
-    disptacherName = "";
+    dispatcherName = "";
     notes = "";
     vehicle = "";
     location = "";

@@ -2,16 +2,8 @@ package org.chaverim5t.chaverim.ui;
 
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.v4.app.Fragment;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
 
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
@@ -20,7 +12,7 @@ import org.chaverim5t.chaverim.data.UserManager;
  * A fragment that shows the settings for the app.
  * <p/>
  * A the top are three custom Preferences: one which displays the logged in user and allows them to
- * sign out, and two which allow the user to initiate a phone call to the dispatcher or respodner
+ * sign out, and two which allow the user to initiate a phone call to the dispatcher or responder
  * hotlines, respectively.
  * <p/>
  * Below that are the other preferences. Which ones are available vary by user permissions, e.g.

@@ -13,10 +13,8 @@ import org.chaverim5t.chaverim.util.NetworkUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 /**
- * Manages the logged in user. Currently only provides the userID, user name, whether or not the
+ * Manages the logged in user. Currently only provides the unitNumber, user name, whether or not the
  * user is a dispatcher, and whether or not the user is a responder, as well as {@link #fakeSignIn}
  * and {@link #signOut}.
  */
@@ -37,7 +35,7 @@ public class UserManager {
     return userManager;
   }
 
-  public UserManager(Context context) {
+  private UserManager(Context context) {
     this.context = context;
     this.networkUtils = NetworkUtils.getNetworkUtils(context);
     loadSharedPreferences();
@@ -46,7 +44,7 @@ public class UserManager {
   private void loadSharedPreferences() {
     SharedPreferences settings =
         context.getSharedPreferences(USER_MANAGER_PREFS_NAME, Context.MODE_PRIVATE);
-    userID = settings.getString("userID", "");
+    unitNumber = settings.getString("unitNumber", "");
     userFullName = settings.getString("userFullName", "");
     authToken = settings.getString("authToken", "");
     signedIn = (authToken.length() > 0);
@@ -61,7 +59,7 @@ public class UserManager {
     SharedPreferences settings =
         context.getSharedPreferences(USER_MANAGER_PREFS_NAME, Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = settings.edit();
-    editor.putString("userID", userID);
+    editor.putString("unitNumber", unitNumber);
     editor.putString("userFullName", userFullName);
     editor.putString("authToken", authToken);
     editor.putBoolean("fakeData", fakeData);
@@ -70,7 +68,7 @@ public class UserManager {
 
   }
   private boolean signedIn;
-  private String userID;
+  private String unitNumber;
   private String userFullName;
   private String authToken;
   private boolean userIsDispatcher = false;
@@ -83,8 +81,8 @@ public class UserManager {
 
   public void fakeSignIn() {
     signedIn = true;
-    userID = "T21";
-    userFullName = "Shlomo Markowitz";
+    unitNumber = "Fake21";
+    userFullName = "Fake User";
     oldDispatchSystemID = "98";
     userIsDispatcher = true;
     userIsResponder = true;
@@ -95,7 +93,7 @@ public class UserManager {
 
   public void signOut() {
     signedIn = false;
-    userID = "";
+    unitNumber = "";
     userFullName = "";
     saveSharedPreferences();
   }
@@ -116,8 +114,8 @@ public class UserManager {
     return userIsAdmin;
   }
 
-  public String userID() {
-    return userID;
+  public String unitNumber() {
+    return unitNumber;
   }
 
   public String userFullName() {
@@ -128,10 +126,10 @@ public class UserManager {
     return oldDispatchSystemID;
   }
 
-  public Request attemptSignIn(final String requestUserID, String password,
+  public Request attemptSignIn(final String requestUnitNumber, String password,
       final Response.Listener<JSONObject> userListener,
       final Response.ErrorListener userErrorListener) {
-    Object[][] params = {{"unit_number", requestUserID}, {"password", password}};
+    Object[][] params = {{"unit_number", requestUnitNumber}, {"password", password}};
     return attemptSignIn(params, userListener, userErrorListener);
   }
 
@@ -169,8 +167,8 @@ public class UserManager {
     return networkUtils.makeApiRequest("getauthtoken", params, listener, userErrorListener);
   }
 
-  public Request attemptSignIn(String requestUserID, String password) {
-    return attemptSignIn(requestUserID, password, null, null);
+  public Request attemptSignIn(String requestUnitNumber, String password) {
+    return attemptSignIn(requestUnitNumber, password, null, null);
   }
 
   private void processAuthTokenResponse(JSONObject response) throws JSONException {
@@ -183,7 +181,7 @@ public class UserManager {
       JSONObject userObject = response.getJSONObject("user");
       Log.d(TAG, "Parsing user: " + userObject.toString(2));
       if (userObject.has("unit_number")) {
-        userID = userObject.getString("unit_number");
+        unitNumber = userObject.getString("unit_number");
       }
       if (userObject.has("name")) {
         userFullName = userObject.getString("name");

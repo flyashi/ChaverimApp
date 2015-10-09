@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,8 +23,8 @@ import java.util.ArrayList;
  */
 public class NewCallFragment extends Fragment {
 
-  public static final String LAST_BUTTON_KEY = "LAST_BUTTON";
-  public static final String LAST_AREA_KEY = "LAST_AREA";
+  private static final String LAST_BUTTON_KEY = "LAST_BUTTON";
+  private static final String LAST_AREA_KEY = "LAST_AREA";
   private final LightingColorFilter quickButtonSelectedColorFilter =
       new LightingColorFilter(-1, 255);
 
@@ -121,8 +120,8 @@ public class NewCallFragment extends Fragment {
   private void setupQuickButtons(View view, Bundle savedInstanceState) {
     quickButtons.clear();
     quickButtonOnClickListener = new QuickButtonOnClickListener();
-    for (int i = 0; i < quickButtonIds.length; i++) {
-      ImageView imageView = (ImageView) view.findViewById(quickButtonIds[i]);
+    for (int quickButtonId : quickButtonIds) {
+      ImageView imageView = (ImageView) view.findViewById(quickButtonId);
       imageView.setOnClickListener(quickButtonOnClickListener);
       quickButtons.add(imageView);
     }
@@ -141,10 +140,10 @@ public class NewCallFragment extends Fragment {
   private void setupCallAreaButtons(View view, Bundle savedInstanceState) {
     callAreaButtons.clear();
     callAreaButtonOnClickListener = new CallAreaButtonOnClickListener();
-    for (int i = 0; i < callAreaButtonIds.length; i++) {
-      View button = view.findViewById(callAreaButtonIds[i]);
+    for (int callAreaButtonId : callAreaButtonIds) {
+      View button = view.findViewById(callAreaButtonId);
       button.setOnClickListener(callAreaButtonOnClickListener);
-      callAreaButtons.add((TextView)button);
+      callAreaButtons.add((TextView) button);
     }
     int index = 2; // Bayswater
     if (savedInstanceState != null) {
@@ -189,6 +188,7 @@ public class NewCallFragment extends Fragment {
   private class QuickButtonOnClickListener implements ImageView.OnClickListener {
     @Override
     public void onClick(View v) {
+      //noinspection SuspiciousMethodCalls
       int index = quickButtons.indexOf(v);
       ImageView imageView = (ImageView)v;
       if (imageView == quickButtons.get(quickButtons.size() - 1)) { // "More"
@@ -215,6 +215,7 @@ public class NewCallFragment extends Fragment {
 
     @Override
     public void onClick(View v) {
+      //noinspection SuspiciousMethodCalls
       int index = callAreaButtons.indexOf(v);
       if (index == selectedCallAreaButtonIndex) {
         // Already selected, do nothing

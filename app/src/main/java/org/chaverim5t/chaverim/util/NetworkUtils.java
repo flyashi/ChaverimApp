@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,9 +29,7 @@ public class NetworkUtils {
 
   private NetworkUtils(Context context) {
     this.context = context.getApplicationContext();
-    if (context != null) {
-      this.requestQueue = Volley.newRequestQueue(context);
-    }
+    this.requestQueue = Volley.newRequestQueue(context);
   }
 
   public static NetworkUtils getNetworkUtils(Context context) {
@@ -78,7 +75,6 @@ public class NetworkUtils {
       public void onErrorResponse(VolleyError error) {
         Log.e(TAG, "Got error response", error);
         if (error.networkResponse != null) {
-          Snackbar.make(null, "Hello", Snackbar.LENGTH_SHORT).show();
           Log.e(TAG, "HTTP return code: " + Integer.toString(error.networkResponse.statusCode));
           for (String headerName : error.networkResponse.headers.keySet()) {
             Log.e(TAG, "HTTP return header: '" + headerName + "' = '" + error.networkResponse.headers.get(headerName) + "'");

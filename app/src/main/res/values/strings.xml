@@ -7,11 +7,33 @@
     <string name="title_activity_main">MainActivity</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_verify_sms">Verify SMS</string>
 
     <!-- Verify SMS Activity -->
     <string name="description_enter_sms_code">We sent an SMS to your phone with a verification code. When you receive that code, enter it here.</string>
     <string name="sms_code_hint">e.g. 1234</string>
     <string name="verify_button_label">Verify</string>
+
+    <!-- Various other strings -->
+    <string name="content_description_background">background</string>
+    <string name="hint_phone_number">(111) 222–3333</string>
+    <string name="content_description_call_type_icon">Call type icon</string>
+    <string name="keys_down_sewer">Keys Down Sewer</string>
+    <string name="minyan_needed">Minyan Needed</string>
+    <string name="car_stuck">Car Stuck</string>
+    <string name="begin_button_text">BEGIN</string>
+    <string name="main_activity_title">Chaverim</string>
+    <string name="no_recent_hotline_calls">No recent Hotline calls.</string>
+    <string name="no_open_or_recent_dispatched_calls">No open/recent calls. Pull to refresh.</string>
+    <string name="hint_new_call_problem">Problem</string>
+    <string name="hint_new_call_phone_number">Number</string>
+    <string name="hint_new_call_caller_name">Name</string>
+    <string name="hint_new_call_address_or_location">Address</string>
+    <string name="hint_new_call_other_call_area">Other Call Area</string>
+    <string name="hint_new_call_vehicle_description">Car color/make/model</string>
+    <string name="hint_new_call_note_for_members">Click to Add Note - Sent to Members</string>
+    <string name="new_call_create_and_dispatch_button_label">CREATE AND DISPATCH</string>
+    <string name="content_description_chaverim_logo">Chaverim logo</string>
+    <string name="no_callerid_notes_message">No notes. Tap to add note</string>
+    <string name="content_description_callerid_add_note_button">Add call note</string>
 </resources>

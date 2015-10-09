@@ -21,13 +21,13 @@ import org.chaverim5t.chaverim.data.CallerID;
  * A fragment that displays a {@link RecyclerView} of recent calls to the hotline, and allows the
  * user to call back the caller.
  */
-public class CallerIDFragment extends Fragment {
+public final class CallerIDFragment extends Fragment {
 
   private static final String TAG = CallerIDFragment.class.getSimpleName();
   private RecyclerView recyclerView;
   private TextView noHotlineCallsTextView;
 
-  private CallManager callManager = CallManager.getCallManager(getContext());
+  private CallManager callManager;
 
   private CallerIDViewAdapter callerIDViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;
@@ -40,6 +40,8 @@ public class CallerIDFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
+    callManager = CallManager.getCallManager(getContext());
+
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_caller_id, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.callerid_recycler_view);
@@ -108,7 +110,7 @@ public class CallerIDFragment extends Fragment {
       return callManager.getCallerIDs().size();
     }
 
-    class CallerIDViewHolder extends RecyclerView.ViewHolder {
+    final class CallerIDViewHolder extends RecyclerView.ViewHolder {
       public TextView title;
       public CallerIDViewHolder(View itemView) {
         super(itemView);

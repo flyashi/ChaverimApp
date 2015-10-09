@@ -3,6 +3,7 @@ package org.chaverim5t.chaverim.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -43,19 +44,12 @@ import java.util.List;
 /**
  * A login screen that offers login via SMS or username and password.
  *
- * NOTE: There's a LOT of unneeded boilerplate left over from Android Studio's default LoginAcivity.
+ * NOTE: There's a LOT of unneeded boilerplate left over from Android Studio's default LoginActivity.
  * I removed all the Loaders since we have at least one user on API 10; we'll have to settle for
  * {@link AsyncTask}s. However there's still a lot of boilerplate left.
  */
 public class LoginActivity extends Activity {
 
-  /**
-   * A dummy authentication store containing known user names and passwords.
-   * TODO: remove after connecting to a real authentication system.
-   */
-  private static final String[] DUMMY_CREDENTIALS = new String[]{
-      "foo@example.com:hello", "bar@example.com:world"
-  };
   private static final String TAG = LoginActivity.class.getSimpleName();
   // Keep track of the login request to ensure we can cancel it if requested.
   private Request loginOrSmsRequest = null;
@@ -77,7 +71,7 @@ public class LoginActivity extends Activity {
     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     // Set up the login form.
-    mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+    mUsernameView = (AutoCompleteTextView) findViewById(R.id.unit_number_text);
     populateAutoComplete();
 
     mPasswordView = (EditText) findViewById(R.id.password);
@@ -128,7 +122,10 @@ public class LoginActivity extends Activity {
   private void setupActionBar() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       // Show the Up button in the action bar.
-      getActionBar().setDisplayHomeAsUpEnabled(true);
+      ActionBar actionBar = getActionBar();
+      if (actionBar != null) {
+        actionBar.setDisplayHomeAsUpEnabled(true);
+      }
     }
   }
 
@@ -137,7 +134,7 @@ public class LoginActivity extends Activity {
    * If there are form errors (invalid email, missing fields, etc.), the
    * errors are presented and no actual login attempt is made.
    */
-  public void attemptLogin() {
+  private void attemptLogin() {
 
     // just do the fake login
     // TODO(yakov): Do the real login!
@@ -166,7 +163,7 @@ public class LoginActivity extends Activity {
     View focusView = null;
 
     // Check for a valid password, if the user entered one.
-    if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+    if (!TextUtils.isEmpty(password) || !isPasswordValid(password)) {
       mPasswordView.setError(getString(R.string.error_invalid_password));
       focusView = mPasswordView;
       cancel = true;
@@ -246,22 +243,6 @@ public class LoginActivity extends Activity {
   }
 
   private void attemptRequestSMS() {
-    /*
-        Snackbar snackbar = Snackbar.make(verifyButton, "Hello", Snackbar.LENGTH_SHORT);
-        snackbar.show();
-        */
-    //Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
-        /*
-        UserManager.getUserManager(getApplicationContext()).fakeSignIn();
-
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        // prevent back
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        finish();
-        startActivity(intent);
-        */
-
-
     if (loginOrSmsRequest != null) {
       Log.d(TAG, "loginOrSmsRequest is not null. Quitting...");
       return;
@@ -325,15 +306,15 @@ public class LoginActivity extends Activity {
   }
 
   private boolean isPasswordValid(String password) {
-    //TODO: Replace this with your own logic
-    return true; //password.length() > 4;
+    //TODO(yakov): Figure out what the real strategy is
+    return password.length() > 0;
   }
 
   /**
    * Shows the progress UI and hides the login form.
    */
-  @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-  public void showProgress(final boolean show) {
+  //@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+  private void showProgress(final boolean show) {
     // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
     // for very easy animations. If available, use these APIs to fade-in
     // the progress spinner.
@@ -369,7 +350,8 @@ public class LoginActivity extends Activity {
    * Use an AsyncTask to fetch the user's email addresses on a background thread, and update
    * the email text field with results on the main UI thread.
    */
-  class SetupEmailAutoCompleteTask extends AsyncTask<Void, Void, List<String>> {
+  // TODO(yakov): Remove this; replace with list of users from the server?
+  private class SetupEmailAutoCompleteTask extends AsyncTask<Void, Void, List<String>> {
 
     @Override
     protected List<String> doInBackground(Void... voids) {

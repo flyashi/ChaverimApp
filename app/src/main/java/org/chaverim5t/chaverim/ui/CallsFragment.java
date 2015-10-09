@@ -30,8 +30,6 @@ import org.chaverim5t.chaverim.data.UserManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 
 /**
  * A fragment that displays open and recent dispatched calls for assistance in a
@@ -89,7 +87,12 @@ public class CallsFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
               swipeRefreshLayout.setRefreshing(false);
               request = null;
-              Snackbar.make(getView(), "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+              if (getView() == null) {
+                Log.e(TAG, "Can't Snackbar error since getView() is null", error);
+                return;
+              } else {
+                Snackbar.make(getView(), "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+              }
             }
           };
           Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
@@ -214,7 +217,8 @@ public class CallsFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= 23) {
           holder.durationText.setTextAppearance(android.R.style.TextAppearance_Small);
         } else {
-          // TODO(yakov): Make the text small on other devices.
+          // TODO(yakov): See if this is the right size.
+          holder.durationText.setTextSize(12);
         }
       } else {
         holder.durationView.setVisibility(View.GONE);
@@ -238,7 +242,7 @@ public class CallsFragment extends Fragment {
           holder.actionRespondView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              call.coverage.add(userManager.userID());
+              call.coverage.add(userManager.unitNumber());
               callManager.updateRespondingList();
               ((MainActivity) getActivity()).mViewPager.setCurrentItem(0 /* first page */, true /* smooth scroll */);
             }
@@ -305,25 +309,25 @@ public class CallsFragment extends Fragment {
     }
 
     class CallTileViewHolder extends RecyclerView.ViewHolder {
-      public TextView title;
-      public ImageView callTypeImage;
-      public TextView callNumberText;
-      public View callerNameNumberView;
-      public TextView callerNameNumberText;
-      public View locationView;
-      public TextView locationText;
-      public View durationView;
-      public TextView durationText;
-      public TextView vehicleText;
-      public View actionRespondView;
-      public TextView actionRespondText;
-      public ImageView actionRespondImage;
-      public View actionCancelReopenView;
-      public TextView actionCancelReopenText;
-      public ImageView actionCancelReopenImage;
-      public View actionEditView;
-      public TextView actionEditText;
-      public ImageView actionEditImage;
+      public final TextView title;
+      public final ImageView callTypeImage;
+      public final TextView callNumberText;
+      public final View callerNameNumberView;
+      public final TextView callerNameNumberText;
+      public final View locationView;
+      public final TextView locationText;
+      public final View durationView;
+      public final TextView durationText;
+      public final TextView vehicleText;
+      public final View actionRespondView;
+      public final TextView actionRespondText;
+      public final ImageView actionRespondImage;
+      public final View actionCancelReopenView;
+      public final TextView actionCancelReopenText;
+      public final ImageView actionCancelReopenImage;
+      public final View actionEditView;
+      public final TextView actionEditText;
+      public final ImageView actionEditImage;
 
       public CallTileViewHolder(View itemView) {
         super(itemView);

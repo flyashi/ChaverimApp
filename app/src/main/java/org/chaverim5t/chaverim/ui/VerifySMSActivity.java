@@ -4,17 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -22,7 +18,6 @@ import com.android.volley.VolleyError;
 
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.UserManager;
-import org.chaverim5t.chaverim.util.NetworkUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -121,7 +116,7 @@ public class VerifySMSActivity extends AppCompatActivity {
         .attemptPhoneNumberVerification(phoneNumber, smsCode, listener, errorListener);
   }
 
-  public void showProgress(final boolean show) {
+  private void showProgress(final boolean show) {
     // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
     // for very easy animations. If available, use these APIs to fade-in
     // the progress spinner.

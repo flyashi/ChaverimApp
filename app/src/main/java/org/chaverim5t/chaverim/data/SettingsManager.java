@@ -9,7 +9,7 @@ public class SettingsManager {
   private static SettingsManager settingsManager;
   private final Context context;
 
-  public SettingsManager(Context context) {
+  private SettingsManager(Context context) {
     this.context = context;
   }
 

@@ -10,7 +10,7 @@
         android:src="@android:drawable/ic_menu_call"
         android:id="@+id/image"/>
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:text="Text"
         style="?android:attr/textAppearanceMedium"
