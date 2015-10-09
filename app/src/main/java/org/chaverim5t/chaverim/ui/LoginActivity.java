@@ -112,7 +112,7 @@ public class LoginActivity extends Activity {
   private void populateAutoComplete() {
     if (VERSION.SDK_INT >= 8) {
       // Use AccountManager (API 8+)
-      new SetupEmailAutoCompleteTask().execute(null, null);
+      //new SetupEmailAutoCompleteTask().execute(null, null);
     }
   }
 
@@ -250,6 +250,17 @@ public class LoginActivity extends Activity {
     }
 
     String phoneNumber = mPhoneNumberView.getText().toString();
+
+    // TODO(yakov): Keep this easter egg or not?
+    if (phoneNumber.equals("111")) {
+      UserManager.getUserManager(this).fakeSignIn();
+      Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+      // Don't allow the user to go back. Therefore, comment this out.
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+      finish();
+      startActivity(intent);
+    }
+
     if (!PhoneNumberFormatter.isValid(phoneNumber)) {
       Log.d(TAG, "Not a valid phone number: " + phoneNumber + ". Quitting...");
       mPhoneNumberView.setError(getString(R.string.error_invalid_phone_number));
