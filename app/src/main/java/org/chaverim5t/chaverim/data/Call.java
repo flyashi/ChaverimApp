@@ -27,11 +27,11 @@ public class Call {
   public boolean urgent;
   public String location;
 
-  public List<VoiceNote> voiceNotes;
+  public ArrayList<VoiceNote> voiceNotes;
 
-  public List<Message> messages;
+  public ArrayList<Message> messages;
 
-  public List<String> coverage;
+  public ArrayList<String> coverage;
 
 
   class Message {
