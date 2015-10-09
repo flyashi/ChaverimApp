@@ -53,6 +53,20 @@ public class UserManager {
     userIsDispatcher = settings.getBoolean("isDispatcher", false);
     userIsResponder = settings.getBoolean("isResponder", false);
 
+    // Fake data: user is everything
+    if (fakeData) {
+      userIsAdmin = userIsDispatcher = userIsResponder = true;
+    }
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("unitNumber: " + unitNumber + "\n");
+    stringBuilder.append("userFullName: " + userFullName + "\n");
+    stringBuilder.append("authToken: " + authToken + "\n"); // TODO(yakov): DON'T LOG AUTH TOKENS!
+    stringBuilder.append("signedIn: " + signedIn + "\n");
+    stringBuilder.append("fakeData: " + fakeData + "\n");
+    stringBuilder.append("userIsAdmin: " + userIsAdmin + "\n");
+    stringBuilder.append("userIsDispatcher: " + userIsDispatcher + "\n");
+    stringBuilder.append("userIsResponder: " + userIsResponder + "\n");
+    Log.d(TAG, "Loaded shared preferences: " + stringBuilder.toString());
   }
 
   private void saveSharedPreferences() {

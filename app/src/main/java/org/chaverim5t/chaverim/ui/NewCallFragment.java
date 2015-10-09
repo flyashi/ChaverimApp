@@ -242,8 +242,10 @@ public class NewCallFragment extends Fragment {
           }
         }
       }
+      // "OTHER" is the last one.
       if (index == callAreaButtonIds.length - 1) {
         otherCallAreaText.setVisibility(View.VISIBLE);
+        otherCallAreaText.requestFocus();
       } else {
         otherCallAreaText.setVisibility(View.GONE);
       }
