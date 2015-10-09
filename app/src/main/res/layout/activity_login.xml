@@ -106,7 +106,7 @@
                         android:singleLine="true"/>
 
                     <Button
-                        android:id="@+id/email_sign_in_button"
+                        android:id="@+id/unit_number_and_password_sign_in_button"
                         style="?android:textAppearanceSmall"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

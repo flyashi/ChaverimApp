@@ -56,7 +56,7 @@ public class LoginActivity extends Activity {
 
   // UI references.
   private EditText mPhoneNumberView;
-  private AutoCompleteTextView mUsernameView;
+  private AutoCompleteTextView mUnitNumberView;
   private EditText mPasswordView;
   private View mProgressView;
   private View mLoginFormView;
@@ -71,7 +71,7 @@ public class LoginActivity extends Activity {
     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     // Set up the login form.
-    mUsernameView = (AutoCompleteTextView) findViewById(R.id.unit_number_text);
+    mUnitNumberView = (AutoCompleteTextView) findViewById(R.id.unit_number_text);
     populateAutoComplete();
 
     mPasswordView = (EditText) findViewById(R.id.password);
@@ -86,8 +86,9 @@ public class LoginActivity extends Activity {
       }
     });
 
-    Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-    mEmailSignInButton.setOnClickListener(new OnClickListener() {
+    Button mUnitNumberPasswordSignInButton =
+        (Button) findViewById(R.id.unit_number_and_password_sign_in_button);
+    mUnitNumberPasswordSignInButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
         attemptLogin();
@@ -152,11 +153,11 @@ public class LoginActivity extends Activity {
     }
 
     // Reset errors.
-    mUsernameView.setError(null);
+    mUnitNumberView.setError(null);
     mPasswordView.setError(null);
 
     // Store values at the time of the login attempt.
-    String email = mUsernameView.getText().toString();
+    String unitNumber = mUnitNumberView.getText().toString();
     String password = mPasswordView.getText().toString();
 
     boolean cancel = false;
@@ -169,14 +170,14 @@ public class LoginActivity extends Activity {
       cancel = true;
     }
 
-    // Check for a valid email address.
-    if (TextUtils.isEmpty(email)) {
-      mUsernameView.setError(getString(R.string.error_field_required));
-      focusView = mUsernameView;
+    // Check for a valid unit number.
+    if (TextUtils.isEmpty(unitNumber)) {
+      mUnitNumberView.setError(getString(R.string.error_field_required));
+      focusView = mUnitNumberView;
       cancel = true;
-    } else if (!isEmailValid(email)) {
-      mUsernameView.setError(getString(R.string.error_invalid_email));
-      focusView = mUsernameView;
+    } else if (!isUnitNumberValid(unitNumber)) {
+      mUnitNumberView.setError(getString(R.string.error_invalid_unit_number));
+      focusView = mUnitNumberView;
       cancel = true;
     }
 
@@ -188,7 +189,7 @@ public class LoginActivity extends Activity {
       // Show a progress spinner, and kick off a background task to
       // perform the user login attempt.
       showProgress(true);
-      //mAuthTask = new UserLoginTask(email, password);
+      //mAuthTask = new UserLoginTask(unitNumber, password);
       //mAuthTask.execute((Void) null);
 
       /*
@@ -238,7 +239,7 @@ public class LoginActivity extends Activity {
         }
       };
       loginOrSmsRequest =
-          UserManager.getUserManager(this).attemptSignIn(email, password, listener, errorListener);
+          UserManager.getUserManager(this).attemptSignIn(unitNumber, password, listener, errorListener);
     }
   }
 
@@ -300,9 +301,15 @@ public class LoginActivity extends Activity {
     loginOrSmsRequest = NetworkUtils.getNetworkUtils(getApplicationContext())
         .makeApiRequest("smsrequest", params, listener, errorListener);
   }
-  private boolean isEmailValid(String email) {
-    //TODO: Replace this with your own logic
-    return true; //email.contains("@");
+  private boolean isUnitNumberValid(String unitNumber) {
+    // Should have at least one number and one letter
+    if (unitNumber.replaceAll("\\D+", "").length() == 0) {
+      return false;
+    }
+    if (unitNumber.replaceAll("\\d+", "").length() == 0) {
+      return false;
+    }
+    return true;
   }
 
   private boolean isPasswordValid(String password) {
@@ -383,7 +390,7 @@ public class LoginActivity extends Activity {
         new ArrayAdapter<String>(LoginActivity.this,
             android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-    mUsernameView.setAdapter(adapter);
+    mUnitNumberView.setAdapter(adapter);
   }
 
 }
