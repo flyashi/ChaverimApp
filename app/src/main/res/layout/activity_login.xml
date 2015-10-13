@@ -56,7 +56,11 @@
                     android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:id="@+id/phone_number_text"/>
+                    android:id="@+id/phone_number_text"
+                    android:imeActionId="@+id/request_code"
+                    android:imeActionLabel="@string/request_code_short"
+                    android:imeOptions="actionUnspecified"
+                    />
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -90,7 +94,8 @@
                         android:hint="@string/prompt_unit_number"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:singleLine="true"/>
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"/>
 
                     <EditText
                         android:focusable="true"

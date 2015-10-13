@@ -107,6 +107,16 @@ public class LoginActivity extends Activity {
     mLoginFormView = findViewById(R.id.login_form);
     mProgressView = findViewById(R.id.login_progress);
     mPhoneNumberView = (EditText) findViewById(R.id.phone_number_text);
+    mPhoneNumberView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == R.id.request_code || actionId == EditorInfo.IME_NULL) {
+          attemptRequestSMS();
+          return true;
+        }
+        return false;
+      }
+    });
   }
 
   private void populateAutoComplete() {

@@ -36,4 +36,5 @@
     <string name="content_description_chaverim_logo">Chaverim logo</string>
     <string name="no_callerid_notes_message">No notes. Tap to add note</string>
     <string name="content_description_callerid_add_note_button">Add call note</string>
+    <string name="request_code_short">Request Code</string>
 </resources>
