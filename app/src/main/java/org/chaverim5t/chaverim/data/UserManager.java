@@ -49,14 +49,10 @@ public class UserManager {
     authToken = settings.getString("authToken", "");
     signedIn = (authToken.length() > 0);
     fakeData = settings.getBoolean("fakeData", true);
-    userIsAdmin = settings.getBoolean("isDispatcher", false);
+    userIsAdmin = settings.getBoolean("isAdmin", false);
     userIsDispatcher = settings.getBoolean("isDispatcher", false);
     userIsResponder = settings.getBoolean("isResponder", false);
 
-    // Fake data: user is everything
-    if (fakeData) {
-      userIsAdmin = userIsDispatcher = userIsResponder = true;
-    }
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("unitNumber: " + unitNumber + "\n");
     stringBuilder.append("userFullName: " + userFullName + "\n");
@@ -77,6 +73,10 @@ public class UserManager {
     editor.putString("userFullName", userFullName);
     editor.putString("authToken", authToken);
     editor.putBoolean("fakeData", fakeData);
+    editor.putBoolean("isDispatcher", userIsDispatcher);
+    editor.putBoolean("isResponder", userIsResponder);
+    editor.putBoolean("isAdmin", userIsAdmin);
+
     // Commit the edits!
     editor.commit();
 
@@ -102,6 +102,7 @@ public class UserManager {
     userIsResponder = true;
     userIsAdmin = true;
     fakeData = true;
+    authToken = "fake_auth_token";
     saveSharedPreferences();
   }
 
@@ -109,6 +110,7 @@ public class UserManager {
     signedIn = false;
     unitNumber = "";
     userFullName = "";
+    authToken = "";
     saveSharedPreferences();
   }
 
@@ -211,6 +213,10 @@ public class UserManager {
       }
       if (!userIsResponder && !userIsDispatcher) {
         Log.w(TAG, "WARNING: not responder or dispatcher! App will crash!");
+      }
+      if (userIsAdmin) {
+        Log.i(TAG, "User is admin, adding responder & dispatcher priveleges...");
+        userIsResponder = userIsDispatcher = true;
       }
     } else {
       Log.w(TAG, "GOT NO USER!");

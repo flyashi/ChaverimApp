@@ -49,7 +49,7 @@ public class CallManager {
     if (userManager.isFakeData()) {
 
       Call call = new Call("Boost in Bayswater");
-      call.coverage = Arrays.asList("T21", "W36");
+      call.coverage = new ArrayList<>(Arrays.asList("T21", "W36"));
       call.callerName = "FRANK";
       call.phoneNumber = "7185556789";
       call.callId = 1723;
@@ -69,12 +69,12 @@ public class CallManager {
       voiceNote.author = "C2";
       voiceNote.duration = 12;
       voiceNote.noteID = 12345;
-      call.voiceNotes = Arrays.asList(voiceNote);
+      call.voiceNotes = new ArrayList<>(Arrays.asList(voiceNote));
 
       Call.Message message = call.newMessage();
       message.timestamp = (new GregorianCalendar(2015, 12, 12, 8, 44, 24)).getTimeInMillis();
       message.message = "[6] B: BOOST For a member @ BAY 24 & MOTT Black Town & Country T21";
-      call.messages = Arrays.asList(message);
+      call.messages = new ArrayList<>(Arrays.asList(message));
 
       callsList.add(call);
       callsList.add(new Call(1, "Flat in Far Rockaway"));
@@ -84,18 +84,12 @@ public class CallManager {
       callsList.add(new Call(5, "Ignition problem in Inwood"));
       callsList.add(new Call(6, "Out of Gas in Oceanside"));
 
-      callerIDList = new ArrayList<>();
-      callerIDList.add(new CallerID("(718) 555-7212"));
-      callerIDList.add(new CallerID("(516) 555-1324"));
-      callerIDList.add(new CallerID("(917) 555-5309"));
-      callerIDList.add(new CallerID("(347) 555-8264"));
       updateRespondingList();
     }
   }
 
   private ArrayList<Call> respondingCallsList;
   private ArrayList<Call> callsList;
-  private ArrayList<CallerID> callerIDList;
 
   public boolean isResponding() {
     return respondingCallsList.size() != 0;
@@ -107,10 +101,6 @@ public class CallManager {
 
   public List<Call> getAllCalls() {
     return callsList;
-  }
-
-  public List<CallerID> getCallerIDs() {
-    return callerIDList;
   }
 
   public void updateRespondingList() {

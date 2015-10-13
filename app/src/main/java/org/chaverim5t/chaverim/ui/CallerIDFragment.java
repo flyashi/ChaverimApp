@@ -3,18 +3,33 @@ package org.chaverim5t.chaverim.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import org.chaverim5t.chaverim.R;
 import org.chaverim5t.chaverim.data.CallManager;
 import org.chaverim5t.chaverim.data.CallerID;
+import org.chaverim5t.chaverim.data.CallerIDManager;
+import org.chaverim5t.chaverim.data.UserManager;
+import org.chaverim5t.chaverim.util.PhoneNumberFormatter;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -27,35 +42,73 @@ public final class CallerIDFragment extends Fragment {
   private RecyclerView recyclerView;
   private TextView noHotlineCallsTextView;
 
-  private CallManager callManager;
+  private CallerIDManager callerIDManager;
+  private UserManager userManager;
 
   private CallerIDViewAdapter callerIDViewAdapter;
   private SwipeRefreshLayout swipeRefreshLayout;
+  private Request<JSONObject> request;
+
 
   public CallerIDFragment() {
     // Required empty public constructor
   }
 
-
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    callManager = CallManager.getCallManager(getContext());
+    callerIDManager = CallerIDManager.getCallerIDManager(getContext());
+    userManager = UserManager.getUserManager(getContext());
 
     // Inflate the layout for this fragment
-    View view = inflater.inflate(R.layout.fragment_caller_id, container, false);
+    final View view = inflater.inflate(R.layout.fragment_caller_id, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.callerid_recycler_view);
     noHotlineCallsTextView = (TextView) view.findViewById(R.id.no_recent_hotline_calls_text);
     swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.callerid_swipe_refresh);
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
       public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            swipeRefreshLayout.setRefreshing(false);
+        if (userManager.isFakeData()) {
+          new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+              swipeRefreshLayout.setRefreshing(false);
+            }
+          }, 1000);
+        } else {
+          if (request != null) {
+            Log.d(TAG, "Request is not null, returning...");
+            return;
           }
-        }, 1000);
+          final Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+              swipeRefreshLayout.setRefreshing(false);
+              request = null;
+              Snackbar.make(view, "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+          };
+          Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+              request = null;
+              swipeRefreshLayout.setRefreshing(false);
+              try {
+                if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
+                  Log.e(TAG, "Got error in response: " + response.getString("error"));
+                  errorListener.onErrorResponse(new VolleyError(response.getString("error")));
+                }
+                updateView();
+                // doesn't work: callsViewAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(new CallerIDViewAdapter());
+              } catch (JSONException e) {
+                Log.e(TAG, "Error getting JSON in response", e);
+                errorListener.onErrorResponse(new VolleyError(e));
+              }
+            }
+          };
+          request = callerIDManager.updateCallerIDList(true, listener, errorListener);
+        }
       }
     });
 
@@ -83,7 +136,7 @@ public final class CallerIDFragment extends Fragment {
   }
 
   private void updateView() {
-    if (callManager.getAllCalls().size() > 0) {
+    if (callerIDManager.callerIDList().size() > 0) {
       noHotlineCallsTextView.setVisibility(View.GONE);
       recyclerView.setVisibility(View.VISIBLE);
     } else {
@@ -93,6 +146,9 @@ public final class CallerIDFragment extends Fragment {
   }
 
   class CallerIDViewAdapter extends RecyclerView.Adapter<CallerIDViewAdapter.CallerIDViewHolder> {
+
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Override
     public CallerIDViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
       View view = LayoutInflater.from(getActivity()).inflate(R.layout.tile_callerid, parent, false);
@@ -101,20 +157,23 @@ public final class CallerIDFragment extends Fragment {
 
     @Override
     public void onBindViewHolder(CallerIDViewHolder holder, int position) {
-      CallerID callerID = callManager.getCallerIDs().get(position);
-      holder.title.setText(callerID.phoneNumber);
+      CallerID callerID = callerIDManager.callerIDList().get(position);
+      holder.title.setText(PhoneNumberFormatter.format(callerID.phoneNumber));
+      holder.subtitle.setText(simpleDateFormat.format(new Date(callerID.timestamp)));
     }
 
     @Override
     public int getItemCount() {
-      return callManager.getCallerIDs().size();
+      return callerIDManager.callerIDList().size();
     }
 
     final class CallerIDViewHolder extends RecyclerView.ViewHolder {
       public TextView title;
+      public TextView subtitle;
       public CallerIDViewHolder(View itemView) {
         super(itemView);
         title = (TextView) itemView.findViewById(R.id.phone_number_text);
+        subtitle = (TextView) itemView.findViewById(R.id.phone_number_subtitle);
       }
     }
   }
