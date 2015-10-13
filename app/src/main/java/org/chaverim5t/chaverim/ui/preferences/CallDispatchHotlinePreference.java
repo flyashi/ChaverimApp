@@ -13,21 +13,18 @@ import org.chaverim5t.chaverim.R;
 /**
  * Preference that allows the user to call the Chaverim Dispatch hotline.
  */
-public class CallDispatchHotlinePreference extends Preference {
-  private static final String TAG = CallDispatchHotlinePreference.class.getSimpleName();
-
+public class CallDispatchHotlinePreference extends CallHotlinePreference {
   public CallDispatchHotlinePreference(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
   @Override
-  protected void onBindView(@Nullable View view) {
-    super.onBindView(view);
-    if (view == null) {
-      Log.w(TAG, "View is null!");
-    }
-    View textAndImage = view.findViewById(R.id.text_and_image);
-    TextView textView = (TextView) textAndImage.findViewById(R.id.text);
-    textView.setText("Call Dispatch Hotline");
+  String getText() {
+    return "Call Dispatch Hotline";
+  }
+
+  @Override
+  String getPhoneNumber() {
+    return "+17183371800";
   }
 }

@@ -31,7 +31,10 @@ public class LoggedInUserPreference extends Preference {
   @SuppressWarnings("unused")
   public LoggedInUserPreference(Context context, AttributeSet attributeSet) {
     super(context, attributeSet);
-    userManager = UserManager.getUserManager(getContext());
+    // For preview screen
+    if (context != null) {
+      userManager = UserManager.getUserManager(getContext());
+    }
   }
 
   @Override

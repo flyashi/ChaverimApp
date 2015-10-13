@@ -1,6 +1,8 @@
 package org.chaverim5t.chaverim.ui.preferences;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -12,16 +14,18 @@ import org.chaverim5t.chaverim.R;
 /**
  * Preference that allows the user to call the Chaverim Responder hotline.
  */
-public class CallResponderHotlinePreference extends Preference {
+public class CallResponderHotlinePreference extends CallHotlinePreference {
   public CallResponderHotlinePreference(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
   @Override
-  protected void onBindView(@NonNull View view) {
-    super.onBindView(view);
-    View textAndImage = view.findViewById(R.id.text_and_image);
-    TextView textView = (TextView) textAndImage.findViewById(R.id.text);
-    textView.setText("Call Responder Hotline");
+  String getText() {
+    return "Call Responder Hotline";
+  }
+
+  @Override
+  String getPhoneNumber() {
+    return "+16468324285";
   }
 }
