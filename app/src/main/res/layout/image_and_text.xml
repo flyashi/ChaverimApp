@@ -2,18 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:paddingTop="@dimen/text_and_image_vertical_padding"
+              android:paddingBottom="@dimen/text_and_image_vertical_padding">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/text_and_image_icon_size"
+        android:layout_height="@dimen/text_and_image_icon_size"
         android:src="@android:drawable/ic_menu_call"
-        android:id="@+id/image"/>
+        android:id="@+id/image"
+        android:layout_gravity="center_vertical"/>
     <TextView
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Text"
         style="?android:attr/textAppearanceMedium"
         android:id="@+id/text"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:layout_gravity="center_vertical"/>
 </LinearLayout>

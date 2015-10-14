@@ -10,4 +10,8 @@
     <dimen name="tile_card_elevation">5dp</dimen>
     <dimen name="tile_card_corner_radius">4dp</dimen>
     <dimen name="spinner_size">200dp</dimen>
+    <dimen name="tile_call_top_bar_height">36dp</dimen>
+    <dimen name="tile_call_icon_size">32dp</dimen>
+    <dimen name="text_and_image_icon_size">24dp</dimen>
+    <dimen name="text_and_image_vertical_padding">5dp</dimen>
 </resources>

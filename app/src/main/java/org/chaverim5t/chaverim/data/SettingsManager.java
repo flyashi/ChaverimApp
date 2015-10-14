@@ -20,7 +20,4 @@ public class SettingsManager {
     return settingsManager;
   }
 
-  public boolean dispatchOnNewSystem() {
-    return false;
-  }
 }
