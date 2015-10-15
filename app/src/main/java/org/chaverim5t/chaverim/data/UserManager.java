@@ -218,6 +218,7 @@ public class UserManager {
         Log.i(TAG, "User is admin, adding responder & dispatcher priveleges...");
         userIsResponder = userIsDispatcher = true;
       }
+      fakeData = false;
     } else {
       Log.w(TAG, "GOT NO USER!");
     }

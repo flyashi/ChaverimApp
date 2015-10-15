@@ -71,51 +71,7 @@ public class CallsFragment extends Fragment {
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
       public void onRefresh() {
-        if (userManager.isFakeData()) {
-          new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-              swipeRefreshLayout.setRefreshing(false);
-            }
-          }, 1000);
-        } else {
-          if (request != null) {
-            return;
-          }
-          final Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-              swipeRefreshLayout.setRefreshing(false);
-              request = null;
-              if (getView() == null) {
-                Log.e(TAG, "Can't Snackbar error since getView() is null", error);
-                return;
-              } else {
-                Snackbar.make(getView(), "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
-              }
-            }
-          };
-          Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-              request = null;
-              swipeRefreshLayout.setRefreshing(false);
-              try {
-                if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
-                  Log.e(TAG, "Got error in response: " + response.getString("error"));
-                  errorListener.onErrorResponse(new VolleyError(response.getString("error")));
-                }
-                updateView();
-                // doesn't work: callsViewAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(new CallsViewAdapter());
-              } catch (JSONException e) {
-                Log.e(TAG, "Error getting JSON in response", e);
-                errorListener.onErrorResponse(new VolleyError(e));
-              }
-            }
-          };
-          request = callManager.updateCalls(listener, errorListener);
-        }
+        attemptRequest();
       }
     });
 
@@ -139,6 +95,9 @@ public class CallsFragment extends Fragment {
     callsViewAdapter = new CallsViewAdapter();
     recyclerView.setAdapter(callsViewAdapter);
     updateView();
+
+    forceRefresh();
+
     return view;
   }
 
@@ -149,6 +108,59 @@ public class CallsFragment extends Fragment {
     } else {
       noCallsTextView.setVisibility(View.VISIBLE);
       recyclerView.setVisibility(View.GONE);
+    }
+  }
+
+  public void forceRefresh() {
+    swipeRefreshLayout.setRefreshing(true);
+    attemptRequest();
+  }
+
+  private void attemptRequest() {
+    if (userManager.isFakeData()) {
+      new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+          swipeRefreshLayout.setRefreshing(false);
+        }
+      }, 1000);
+    } else {
+      if (request != null) {
+        return;
+      }
+      final Response.ErrorListener errorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+          swipeRefreshLayout.setRefreshing(false);
+          request = null;
+          if (getView() == null) {
+            Log.e(TAG, "Can't Snackbar error since getView() is null", error);
+            return;
+          } else {
+            Snackbar.make(getView(), "Error: " + error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+          }
+        }
+      };
+      Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+          request = null;
+          swipeRefreshLayout.setRefreshing(false);
+          try {
+            if (response.has("error") && !TextUtils.isEmpty(response.getString("error"))) {
+              Log.e(TAG, "Got error in response: " + response.getString("error"));
+              errorListener.onErrorResponse(new VolleyError(response.getString("error")));
+            }
+            updateView();
+            // doesn't work: callsViewAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(new CallsViewAdapter());
+          } catch (JSONException e) {
+            Log.e(TAG, "Error getting JSON in response", e);
+            errorListener.onErrorResponse(new VolleyError(e));
+          }
+        }
+      };
+      request = callManager.updateCalls(listener, errorListener);
     }
   }
 
