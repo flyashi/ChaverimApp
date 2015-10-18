@@ -223,9 +223,10 @@ public class CallsFragment extends Fragment {
         holder.callerNameNumberView.setVisibility(View.GONE);
       }
       holder.locationText.setText(call.location);
+      /* Not ready yet!
       if (userManager.isResponder()) {
         holder.durationView.setVisibility(View.VISIBLE);
-        holder.durationText.setText("(unknown duration");
+        holder.durationText.setText("(unknown duration)");
         if (Build.VERSION.SDK_INT >= 23) {
           holder.durationText.setTextAppearance(android.R.style.TextAppearance_Small);
         } else {
@@ -235,10 +236,13 @@ public class CallsFragment extends Fragment {
       } else {
         holder.durationView.setVisibility(View.GONE);
       }
+
+        */
+
       holder.vehicleText.setText(call.vehicle);
 
       if (userManager.isResponder()) {
-        holder.actionRespondView.setVisibility(View.VISIBLE);
+        holder.actionRespondViewGroup.setVisibility(View.VISIBLE);
         holder.actionRespondImage.setImageResource(R.drawable.ic_directions_run_black_24dp);
         if (callManager.myRespondingCalls().contains(call)) {
           /* user is already responding... */
@@ -261,12 +265,13 @@ public class CallsFragment extends Fragment {
           });
         }
       } else {
-        holder.actionRespondView.setVisibility(View.GONE);
+        holder.actionRespondViewGroup.setVisibility(View.GONE);
       } /* isResponder*/
 
       if (userManager.isDispatcher()) {
-        holder.actionCancelReopenView.setVisibility(View.VISIBLE);
-        holder.actionEditView.setVisibility(View.VISIBLE);
+//        holder.actionCancelReopenView.setVisibility(View.VISIBLE);
+//        holder.actionEditView.setVisibility(View.VISIBLE);
+        holder.actionDispatchViewGroup.setVisibility(View.VISIBLE);
 
         holder.actionEditImage.setImageResource(R.drawable.ic_create_black_24dp);
         holder.actionEditText.setText("Edit");
@@ -305,8 +310,9 @@ public class CallsFragment extends Fragment {
           });
         }
       } else {
-        holder.actionCancelReopenView.setVisibility(View.GONE);
-        holder.actionEditView.setVisibility(View.GONE);
+        //holder.actionCancelReopenView.setVisibility(View.GONE);
+        //holder.actionEditView.setVisibility(View.GONE);
+        holder.actionDispatchViewGroup.setVisibility(View.GONE);
       }
     }
 
@@ -340,6 +346,8 @@ public class CallsFragment extends Fragment {
       public final View actionEditView;
       public final TextView actionEditText;
       public final ImageView actionEditImage;
+      public final View actionRespondViewGroup;
+      public final View actionDispatchViewGroup;
 
       public CallTileViewHolder(View itemView) {
         super(itemView);
@@ -349,9 +357,10 @@ public class CallsFragment extends Fragment {
         this.title = (TextView) itemView.findViewById(R.id.title_text);
         this.callTypeImage = (ImageView) itemView.findViewById(R.id.call_type_image);
         this.callNumberText = (TextView) itemView.findViewById(R.id.call_number_text);
-        this.callerNameNumberView = itemView.findViewById(R.id.caller_name_and_number_text_and_image);
-        this.callerNameNumberText = (TextView) callerNameNumberView.findViewById(R.id.text);
-        ((ImageView) callerNameNumberView.findViewById(R.id.image)).setImageResource(R.drawable.ic_call_black_24dp);
+        this.callerNameNumberView = itemView.findViewById(R.id.caller_name_layout);
+        View callerNameNumberTextAndImage = itemView.findViewById(R.id.caller_name_and_number_text_and_image);
+        this.callerNameNumberText = (TextView) callerNameNumberTextAndImage.findViewById(R.id.text);
+        ((ImageView) callerNameNumberTextAndImage.findViewById(R.id.image)).setImageResource(R.drawable.ic_call_black_24dp);
         this.locationView = itemView.findViewById(R.id.call_location_text_and_image);
         this.locationText = (TextView) locationView.findViewById(R.id.text);
         ((ImageView) locationView.findViewById(R.id.image)).setImageResource(android.R.drawable.ic_menu_mapmode);
@@ -377,6 +386,9 @@ public class CallsFragment extends Fragment {
         this.actionEditView = itemView.findViewById(R.id.action_row_edit);
         this.actionEditText = (TextView) actionEditView.findViewById(R.id.text);
         this.actionEditImage = (ImageView) actionEditView.findViewById(R.id.image);
+
+        this.actionRespondViewGroup = itemView.findViewById(R.id.respond_view);
+        this.actionDispatchViewGroup = itemView.findViewById(R.id.dispatch_view);
       }
     }
   }

@@ -167,6 +167,14 @@ public class CallManager {
               userIsAdmin = userObject.getBoolean("is_admin");
             }
             */
+            call.coverage = new ArrayList<>();
+            if (callObj.has("coverage")) {
+              JSONArray coverageList = callObj.getJSONArray("coverage");
+              for (int coverageNum = 0; coverageNum < coverageList.length(); coverageNum++) {
+                JSONObject coveringUser = coverageList.getJSONObject(coverageNum);
+                call.coverage.add(optionalString(coveringUser, "unit_number", "(unknown user)"));
+              }
+            }
             callsList.add(call);
           }
           updateRespondingList();
