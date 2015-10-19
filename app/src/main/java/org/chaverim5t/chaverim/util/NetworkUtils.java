@@ -25,7 +25,8 @@ public class NetworkUtils {
   private RequestQueue requestQueue;
   private Context context;
 
-  private static final String BASE_URL = "http://10.0.2.2:8080/";  // host PC from emulator
+  //private static final String BASE_URL = "http://10.0.2.2:8080/";  // host PC from emulator
+  private static final String BASE_URL = "https://chaverim5tdispatch.appspot.com/";
 
   private NetworkUtils(Context context) {
     this.context = context.getApplicationContext();

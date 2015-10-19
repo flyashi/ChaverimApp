@@ -9,8 +9,8 @@ android {
         applicationId "org.chaverim5t.chaverim"
         minSdkVersion 7
         targetSdkVersion 23
-        versionCode 1
-        versionName "0.1alpha"
+        versionCode 201510181
+        versionName "2.0.20151018a"
     }
     buildTypes {
         release {
