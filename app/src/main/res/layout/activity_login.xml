@@ -60,6 +60,7 @@
                     android:imeActionId="@+id/request_code"
                     android:imeActionLabel="@string/request_code_short"
                     android:imeOptions="actionUnspecified"
+                    android:contentDescription="phone_input"
                     />
                 <Button
                     android:layout_width="fill_parent"
@@ -68,7 +69,8 @@
                     style="?android:textAppearanceSmall"
                     android:textStyle="bold"
                     android:id="@+id/sms_button"
-                    android:textColor="@color/chaverim_background_dark_text_color"/>
+                    android:textColor="@color/chaverim_background_dark_text_color"
+                    android:contentDescription="request_code_button"/>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
@@ -95,7 +97,8 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:imeOptions="actionNext"/>
+                        android:imeOptions="actionNext"
+                        android:contentDescription="unit_number_input"/>
 
                     <EditText
                         android:focusable="true"
@@ -108,7 +111,8 @@
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:singleLine="true"/>
+                        android:singleLine="true"
+                        android:contentDescription="password_input"/>
 
                     <Button
                         android:id="@+id/unit_number_and_password_sign_in_button"
@@ -118,7 +122,8 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/action_sign_in"
                         android:textStyle="bold"
-                        android:textColor="@color/chaverim_background_dark_text_color"/>
+                        android:textColor="@color/chaverim_background_dark_text_color"
+                        android:contentDescription="signin_button"/>
 
                 </LinearLayout>
             </LinearLayout>

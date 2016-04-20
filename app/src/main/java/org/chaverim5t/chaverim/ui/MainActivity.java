@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity { /* auto-extends FragmentAc
     for (int i = 0; i < iconTabProvider.getCount(); i++) {
       tabLayout.getTabAt(i).setIcon(iconTabProvider.getPageIconResId(i));
       tabLayout.getTabAt(i).setText("");
+      tabLayout.getTabAt(i).setContentDescription(iconTabProvider.getPageTitle(i));
     }
   }
 
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity { /* auto-extends FragmentAc
   interface IconTabProvider {
     int getCount();
     int getPageIconResId(int i);
+    CharSequence getPageTitle(int position);
   }
 
   public class SectionsPagerAdapter extends FragmentPagerAdapter implements IconTabProvider {

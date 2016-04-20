@@ -42,6 +42,7 @@
             android:layout_gravity="bottom"
             android:text="@string/begin_button_text"
             android:id="@+id/begin_button"
+            android:contentDescription="begin_button"
             android:textColor="@color/chaverim_background_dark_text_color"/>
     </LinearLayout>
 
